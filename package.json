@@ -1,1 +1,1 @@
-{"name":"loan-payback-calculator","private":true,"scripts":{"start":"node server.js","test":"node test.js"},"version":"1.0.0"}
+{"engines":{"node":"24.x"},"name":"loan-payback-calculator","private":true,"scripts":{"start":"node server.js","test":"node test.js"},"version":"1.0.0"}
