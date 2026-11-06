@@ -295,6 +295,51 @@ async function main() {
   check('Glass CSS: primary button is solid blue #2563eb', /--primary: #2563eb/.test(css) && /background: var\(--primary\)/.test(css), null);
   check('Glass CSS: no teal/gold theme left', !/#0c3b3c/.test(css) && !/#d9a441/.test(css) && !/--teal/.test(css) && !/--gold/.test(css), null);
 
+  // ---- 21. Final review fixes (6 Nov 2026) ----
+  // HBL flat Rs 1,500 + FED late fee: charged once past the term, and the
+  // notes say the FED is extra (not in the total).
+  const hblLateFee = M.compute(byId['hbl-personal'], { principal: 100000, cycles: 1, borrow_date: '2026-01-01', repay_date: '2029-01-01', term_months: 36 });
+  check('HBL late fee: Rs 1,500 flat once past the 36-month term', hblLateFee.late_fee === 1500, hblLateFee);
+  check('HBL notes: FED is extra and not in the total', hblLateFee.notes.some((n) => n.includes('FED')), hblLateFee.notes);
+  // Amount-range warnings (warn, never block).
+  check('Range warning: Easycash above Rs 25,000 max warns', M.amountRangeWarning(byId['easycash-app'], {}, 30000).includes('25,000'), M.amountRangeWarning(byId['easycash-app'], {}, 30000));
+  check('Range warning: HBL below Rs 25,000 min warns', M.amountRangeWarning(byId['hbl-personal'], {}, 10000).includes('25,000'), M.amountRangeWarning(byId['hbl-personal'], {}, 10000));
+  check('Range warning: PM Youth Tier 2 above Rs 1,500,000 warns', M.amountRangeWarning(byId['pm-youth'], { rate_option: 1 }, 2000000).includes('1,500,000'), M.amountRangeWarning(byId['pm-youth'], { rate_option: 1 }, 2000000));
+  check('Range warning: in-range amount returns empty', M.amountRangeWarning(byId['hbl-personal'], {}, 100000) === '', M.amountRangeWarning(byId['hbl-personal'], {}, 100000));
+  // New card instalments from the research report's card table.
+  check('SCB Asaan: up to 46% APR, editable, verified', byId['scb-asaan'] && byId['scb-asaan'].annual_rate_pct === 46 && byId['scb-asaan'].rate_editable === true && byId['scb-asaan'].verified === true, byId['scb-asaan']);
+  check('SCB Asaan: EMI maths at 46% works', M.compute(byId['scb-asaan'], { principal: 100000, cycles: 1, borrow_date: B, repay_date: D(360), term_months: 12 }).total > 100000, null);
+  const rorZero = M.compute(byId['ubl-cashplus'], { principal: 100000, cycles: 1, borrow_date: B, repay_date: D(360), kfs: { fee_kind: 'flat-term', rate_pct: 0, term_days: 365 } });
+  check('Rate on request: KFS rate 0 (not entered) is not calculable — never a free loan', !!rorZero.error && rorZero.not_calculable === true, rorZero);
+  const rorAllied = M.compute(byId['allied-easy'], { principal: 100000, cycles: 1, borrow_date: B, repay_date: D(360) });
+  check('Rate on request: Allied Easy is not calculable', !!rorAllied.error && rorAllied.not_calculable === true, rorAllied);
+  const rorNoor = M.compute(byId['faysal-noor'], { principal: 100000, cycles: 1, borrow_date: B, repay_date: D(360) });
+  check('Rate on request: Faysal Noor is not calculable', !!rorNoor.error && rorNoor.not_calculable === true, rorNoor);
+  check('Faysal Noor: no late fee, no early fee', byId['faysal-noor'].late_fee.kind === 'none' && byId['faysal-noor'].early === 'None.', byId['faysal-noor']);
+  check('QistBazaar notes: Pakera phone-check discrepancy stated', byId['qistbazaar'].notes.includes('78,100') && byId['qistbazaar'].notes.includes('75,600'), byId['qistbazaar'].notes);
+  // SECP whitelist edition is 29 Sep 2026 everywhere; no stale 11 Sep text.
+  const pubFiles = ['index.html', 'calculator.html', 'how.html', 'sources.html', 'calcpage.js', 'picker.js', 'manual.js', 'nav.js', 'calc.js'];
+  const pubText = pubFiles.map((f) => fs.readFileSync(path.join(__dirname, 'public', f), 'utf8')).join('\n');
+  const presetsText = fs.readFileSync(path.join(__dirname, 'presets.json'), 'utf8');
+  // "11 Sep 2026" survives only inside the two comparison sentences that
+  // say the 29 Sep edition was checked against it — never as the current
+  // whitelist date.
+  const stripped = (pubText + presetsText).replace(/Checked against\s*\n?\s*the 11 Sep 2026 edition/g, '').replace(/Compared with the 11 Sep 2026 edition/g, '');
+  check('SECP whitelist: no stale "11 Sep 2026" as the current date', !/11 Sep 2026/.test(stripped), null);
+  check('SECP whitelist: 29 Sep 2026 on home, how, sources + calcpage', /29 Sep 2026/.test(fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8')) && /29 Sep 2026/.test(fs.readFileSync(path.join(__dirname, 'public', 'how.html'), 'utf8')) && /29 Sep 2026/.test(fs.readFileSync(path.join(__dirname, 'public', 'sources.html'), 'utf8')) && /29 Sep 2026/.test(fs.readFileSync(path.join(__dirname, 'public', 'calcpage.js'), 'utf8')), null);
+  check('JazzCash BNPL: stale unverified note gone from how.html', !/not independently re-verified against a live source/.test(fs.readFileSync(path.join(__dirname, 'public', 'how.html'), 'utf8')) && /Yeylo/.test(fs.readFileSync(path.join(__dirname, 'public', 'how.html'), 'utf8')), null);
+  // Error + warning elements exist on the pages.
+  check('Manual page: error line element exists', /id="mError"/.test(fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8')), null);
+  check('Calculator page: range warning element exists', /id="rangeWarn"/.test(fs.readFileSync(path.join(__dirname, 'public', 'calculator.html'), 'utf8')), null);
+  // Favicon file + link on every page.
+  check('Favicon file exists', fs.existsSync(path.join(__dirname, 'public', 'favicon.ico')), null);
+  for (const f of ['index.html', 'calculator.html', 'how.html', 'sources.html']) {
+    check('Favicon link on ' + f, /rel="icon" href="\/favicon\.ico"/.test(fs.readFileSync(path.join(__dirname, 'public', f), 'utf8')), null);
+  }
+  // Deploy docs.
+  check('DEPLOY.md exists with SnapDeploy steps', fs.existsSync(path.join(__dirname, 'DEPLOY.md')) && /SnapDeploy/.test(fs.readFileSync(path.join(__dirname, 'DEPLOY.md'), 'utf8')) && /node server\.js/.test(fs.readFileSync(path.join(__dirname, 'DEPLOY.md'), 'utf8')) && /3035/.test(fs.readFileSync(path.join(__dirname, 'DEPLOY.md'), 'utf8')), null);
+  check('README: deploy-ready + PORT env documented', /Deploy-ready/.test(fs.readFileSync(path.join(__dirname, 'README.md'), 'utf8')) && /PORT/.test(fs.readFileSync(path.join(__dirname, 'README.md'), 'utf8')), null);
+
   // ---- 20. Server smoke (fresh DB) ----
   try { fs.unlinkSync(DB); } catch {}
   try { fs.unlinkSync(DB + '-wal'); } catch {}
@@ -318,8 +363,8 @@ async function main() {
     check('GET /sources.html -> 200, sources listed', src.status === 200 && /Sources/.test(src.raw) && /jazzcash\.com\.pk/.test(src.raw), src.status);
     check('GET /sources.html -> could-not-verify section present', /What we could not verify/.test(src.raw) && /NBP Advance Salary/.test(src.raw), src.status);
     const ap = await req('GET', '/api/presets');
-    check('GET /api/presets -> 48 presets, each with source + rate', ap.status === 200 && Array.isArray(ap.json.presets) && ap.json.presets.length === 48 && ap.json.presets.every((p) => p.source && p.rate_line), ap.json && ap.json.presets && ap.json.presets.length);
-    check('GET /api/presets -> 17 rate-on-request presets', ap.json.presets.filter((p) => p.model === 'rate-on-request').length === 17, ap.json.presets.filter((p) => p.model === 'rate-on-request').length);
+    check('GET /api/presets -> 51 presets, each with source + rate', ap.status === 200 && Array.isArray(ap.json.presets) && ap.json.presets.length === 51 && ap.json.presets.every((p) => p.source && p.rate_line), ap.json && ap.json.presets && ap.json.presets.length);
+    check('GET /api/presets -> 19 rate-on-request presets', ap.json.presets.filter((p) => p.model === 'rate-on-request').length === 19, ap.json.presets.filter((p) => p.model === 'rate-on-request').length);
     check('GET /api/presets -> 17 nano apps + guardrails + benchmarks', Array.isArray(ap.json.nano_apps) && ap.json.nano_apps.length === 17 && ap.json.nano_guardrails && ap.json.nano_guardrails.max_per_app_rs === 25000 && ap.json.benchmarks && ap.json.benchmarks.sbp_policy_rate_pct === 12 && ap.json.benchmarks.kibor_1y_pct === 12.8, ap.json && ap.json.nano_apps && ap.json.nano_apps.length);
     const calcJs = await req('GET', '/calc.js');
     check('GET /calc.js -> 200', calcJs.status === 200 && /compute/.test(calcJs.raw), calcJs.status);
@@ -335,6 +380,10 @@ async function main() {
     check('GET /calculator.html -> 200, policy card + form present', calcPage.status === 200 && /id="policyCard"/.test(calcPage.raw) && /id="calcForm"/.test(calcPage.raw) && /id="results"/.test(calcPage.raw), calcPage.status);
     const cssServed = await req('GET', '/styles.css');
     check('GET /styles.css -> 200, glass tokens served', cssServed.status === 200 && /rgba\(17, 28, 51, 0\.62\)/.test(cssServed.raw) && /#2563eb/.test(cssServed.raw) && /backdrop-filter: blur\(14px\)/.test(cssServed.raw), cssServed.status);
+    const fav = await req('GET', '/favicon.ico');
+    check('GET /favicon.ico -> 200, icon', fav.status === 200, fav.status);
+    const howFav = await req('GET', '/how.html');
+    check('GET /how.html -> favicon link present', /rel="icon" href="\/favicon\.ico"/.test(howFav.raw), howFav.status);
     const db404 = await req('GET', '/data/loan.sqlite');
     check('DB file is NOT served (404)', db404.status === 404, db404.status);
     const nf = await req('GET', '/nope.html');
