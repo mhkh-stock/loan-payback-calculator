@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How it works — Loan Payback Calculator</title>
+<link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -80,8 +81,9 @@
   <p class="formula">total = price × 1.15 &nbsp;·&nbsp; instalment = total ÷ 3 &nbsp;·&nbsp; late per overdue instalment = 10% × instalment</p>
   <p><strong>Worked example:</strong> Rs 10,000 → total <strong>Rs 11,500</strong>,
   instalment Rs 3,833. One instalment late → 10% × 3,833 ≈ <strong>Rs 383</strong>.</p>
-  <p class="note">This preset was not independently re-verified against a live source —
-  check the JazzCash app. The calculator assumes 3 monthly instalments.</p>
+  <p class="note">Verified against the JazzCash Yeylo page and its merchant terms (Nov 2026):
+  this is JazzCash's BNPL product ("Yeylo"), 15% service fee, 3 instalments at
+  0 / 30 / 60 days, late fee 10% of the overdue instalment, early repayment free.</p>
 
   <h2>7. Custom loan</h2>
   <p>For any other app or lender. Pick the fee type — flat % for the whole term,
@@ -157,7 +159,7 @@
   be worse than no rate.</p>
 
   <h2>Licensed nano loan apps</h2>
-  <p>The SECP whitelist (11 Sep 2026) lists 17 licensed nano loan apps. Their
+  <p>The SECP whitelist (29 Sep 2026) lists 17 licensed nano loan apps. Their
   rates are shown in-app only, so the calculator lists them — with their
   licensed NBFC — on the calculator page, with the SECP guardrails: at most
   Rs 25,000 per app and Rs 75,000 across all apps, tenure at most 90 days,
@@ -165,7 +167,9 @@
   (120% a year at the current 12%). Whether those caps survived the Nov 2025
   amendments is unconfirmed — the calculator says so on screen. Any app NOT on
   the whitelist is unauthorised: Barwaqt was delisted in Aug 2024, QisstPay's
-  app was removed in Jul 2024, and KalPay is not whitelisted.</p>
+  app was removed in Jul 2024, and KalPay is not whitelisted. Checked against
+  the 11 Sep 2026 edition: the 17 nano apps are identical; the only addition
+  is Bunyaad Finance (Credsys, B2B financing, not a consumer loan).</p>
 
   <h2>What "effective cost" and "annualised" mean</h2>
   <p><strong>Effective cost %</strong> = (what you pay back − what you borrowed) ÷
