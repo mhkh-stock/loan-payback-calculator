@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works — Loan Payback Calculator</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><a href="/">💰 Loan Payback Calculator <span class="ur">قرض واپسی کیلکولیٹر</span></a></div>
+  <div class="menu-wrap">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-haspopup="menu" aria-expanded="false">⋮</button>
+    <div class="overflow-menu" id="overflowMenu" role="menu" hidden>
+      <div class="menu-group">Pages</div>
+      <a role="menuitem" href="/">🧮 Calculator</a>
+      <a role="menuitem" href="/how.html">📖 How it works</a>
+      <a role="menuitem" href="/sources.html">🔗 Sources</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <a class="back-btn" href="/">← Back to home</a>
+  <h1>How it works <span class="ur">یہ کیسے کام کرتا ہے؟</span></h1>
+  <p>Every loan app charges in its own way. This page explains each formula in
+  plain words, with one worked example per loan — so you can check the
+  calculator's numbers by hand.</p>
+
+  <h2>1. Easypaisa Easycash (App) — weekly, compounded</h2>
+  <p>Each week the app adds a percentage of what you still owe — and the next
+  week's percentage is charged on the bigger amount, because the fee joins the
+  loan. That is compounding. A part-week counts daily at the weekly rate ÷ 7.</p>
+  <p class="formula">fee each week = what you owe × rate &nbsp;·&nbsp; rate = 5% (cycles 1–30), 4.5% (31–60), 4% (61+) &nbsp;·&nbsp; fee stops at 40% of the loan (8 weeks)</p>
+  <p><strong>Worked example:</strong> Rs 10,000 for 4 weeks at 5% →
+  10,000 × 1.05 × 1.05 × 1.05 × 1.05 = <strong>Rs 12,155</strong>. You pay Rs 2,155 extra.</p>
+  <p class="note">There is no late fee on the app route — the weekly charge itself is
+  the cost of keeping the loan longer. Markup is charged per day of use.</p>
+
+  <h2>2. Easypaisa Easycash (USSD) — flat fee for 30 days</h2>
+  <p>The fee is one flat percentage of the loan for the whole 30-day term:
+  20% (cycles 1–30), 18% (31–60), 16% (61+). It applies in full for the term.
+  If you are more than 2 days past the due date, one extra 5% of the loan is
+  added once.</p>
+  <p class="formula">total = loan × (1 + flat %) &nbsp;·&nbsp; late (once, after 2 grace days) = loan × 5%</p>
+  <p><strong>Worked example:</strong> Rs 10,000, cycles 1–30, repaid on day 30 →
+  10,000 × 1.20 = <strong>Rs 12,000</strong>. Repaid on day 35 (past the grace) →
+  12,000 + 500 = <strong>Rs 12,500</strong>.</p>
+
+  <h2>3. Easypaisa Buy Now Pay Later — flat fee per term</h2>
+  <p>10% for 14 days, or 20% for 30 days. One late fee of 5% of the loan, charged
+  from the first day past the due date (no grace period is stated).</p>
+  <p class="formula">total = loan × (1 + 10% or 20%) &nbsp;·&nbsp; late (once, past the due date) = loan × 5%</p>
+  <p><strong>Worked example:</strong> Rs 10,000 for 30 days → 10,000 × 1.20 =
+  <strong>Rs 12,000</strong>. One day late → 12,000 + 500 = <strong>Rs 12,500</strong>.</p>
+
+  <h2>4. JazzCash ReadyCash — 5% a week, simple</h2>
+  <p>Each week adds 5% of the <em>original</em> loan — the fee does not compound.
+  That is why Rs 100 becomes 105, 110, 115, 120 over weeks 1–4. The fee stops
+  at 40% (8 weeks / 56 days).</p>
+  <p class="formula">fee = loan × 5% × weeks &nbsp;·&nbsp; due 28 days, max 56 days, cap 40%</p>
+  <p><strong>Worked example:</strong> Rs 5,000 for 1 week → 5,000 × 1.05 =
+  <strong>Rs 5,250</strong>. Rs 5,000 for 4 weeks → 5,000 × 1.20 = <strong>Rs 6,000</strong>.</p>
+  <p class="note">There is no separate late fee — the weekly fee itself is the cost of
+  being late. Partial repayment lowers the fee, because it then runs on what is
+  left. This calculator assumes you repay the whole loan at once.</p>
+
+  <h2>5. Daraz PayLater — flat fee, in instalments</h2>
+  <p>16% for a 1-month plan (1 instalment), 30% for a 3-month plan (3 monthly
+  instalments of 10% each). The late fee is charged per overdue instalment:
+  5% of that instalment, capped at Rs 800.</p>
+  <p class="formula">total = price × (1 + 16% or 30%) &nbsp;·&nbsp; instalment = total ÷ 1 or 3 &nbsp;·&nbsp; late per overdue instalment = min(5% × instalment, Rs 800)</p>
+  <p><strong>Worked example:</strong> Rs 20,000 on the 3-month plan → total
+  Rs 26,000, instalment Rs 8,667. One instalment late → 5% × 8,667 ≈
+  <strong>Rs 433</strong> (under the Rs 800 cap).</p>
+
+  <h2>6. JazzCash BNPL — flat fee, 3 instalments</h2>
+  <p>15% service fee on the price, repaid in 3 instalments. The late fee is 10%
+  of each overdue instalment.</p>
+  <p class="formula">total = price × 1.15 &nbsp;·&nbsp; instalment = total ÷ 3 &nbsp;·&nbsp; late per overdue instalment = 10% × instalment</p>
+  <p><strong>Worked example:</strong> Rs 10,000 → total <strong>Rs 11,500</strong>,
+  instalment Rs 3,833. One instalment late → 10% × 3,833 ≈ <strong>Rs 383</strong>.</p>
+  <p class="note">This preset was not independently re-verified against a live source —
+  check the JazzCash app. The calculator assumes 3 monthly instalments.</p>
+
+  <h2>7. Custom loan</h2>
+  <p>For any other app or lender. Pick the fee type — flat % for the whole term,
+  % per week simple, or % per week compounded — then the rate, the term, the
+  late-fee type, the grace days, and a cap. The calculator applies exactly what
+  you typed, and says so.</p>
+
+  <h2>8. Bank and microfinance personal loans — EMI on a reducing balance</h2>
+  <p>A bank loan is repaid in equal monthly instalments (EMI). Each instalment
+  pays that month's interest first, and the rest reduces the loan — so the
+  interest part shrinks every month. The rate is fixed for the whole loan, or
+  it is 1-year KIBOR plus a spread (see section 9).</p>
+  <p class="formula">EMI = loan × r × (1+r)^n ÷ ((1+r)^n − 1) &nbsp;·&nbsp; r = annual rate ÷ 12 &nbsp;·&nbsp; n = months</p>
+  <p><strong>Worked example:</strong> Rs 100,000 at 12% a year for 12 months →
+  instalment <strong>Rs 8,885</strong>, total <strong>Rs 106,619</strong>, interest
+  Rs 6,619. The same loan at HBL's 35.99% costs Rs 10,046 a month, Rs 120,549
+  in total.</p>
+  <p class="note">The calculator assumes you pay every instalment on its due date.
+  The planned repayment date is the day you settle the loan — settle early and
+  you pay the remaining balance (before any early-settlement fee the bank
+  charges separately). A late fee only counts if you pay after the loan's end
+  date.</p>
+
+  <h2>9. KIBOR + spread — the rate moves with the market</h2>
+  <p>Most bank loans are priced as 1-year KIBOR plus a spread. KIBOR is the rate
+  banks charge each other, published daily by the State Bank — about 12.8% in
+  late October 2026. The spread is the bank's margin, fixed in your Key Fact
+  Statement (or set per customer, as with JS CashAsaan).</p>
+  <p class="formula">annual rate = 1-year KIBOR + spread &nbsp;·&nbsp; then the EMI formula of section 8</p>
+  <p><strong>Worked example:</strong> MCB Personal Loan, qualifying credit history:
+  12.8% KIBOR + 14% = 26.8% a year. Rs 100,000 for 12 months → instalment
+  <strong>Rs 9,592</strong>, total <strong>Rs 115,104</strong>. Non-qualifying
+  (+16% = 28.8%) → instalment Rs 9,690, total Rs 116,277.</p>
+  <p class="note">KIBOR changes daily — the calculator uses 12.8% (late Oct 2026)
+  unless you type today's rate. Always check today's KIBOR before you borrow.</p>
+
+  <h2>10. Islamic financing — a fixed sale price, not interest</h2>
+  <p>In Musawamah the bank buys an asset and sells it to you at an agreed, fixed
+  total price, paid in instalments. The profit rate only sets that price — once
+  set, it does not compound like interest. A late payment cannot become the
+  bank's income, so it goes to charity.</p>
+  <p class="formula">total = loan × (1 + profit rate × years) &nbsp;·&nbsp; instalment = total ÷ months</p>
+  <p><strong>Worked example:</strong> Meezan Islamic Personal Finance, Rs 100,000
+  at 16.55% for 24 months → profit 100,000 × 16.55% × 2 = Rs 33,100, total
+  <strong>Rs 133,100</strong>, instalment <strong>Rs 5,546</strong>.</p>
+
+  <h2>11. Buy Now Pay Later — profit built into the price</h2>
+  <p>With QistBazaar you pay part of the price first (30% down), and the rest
+  plus a fixed profit in instalments. With Baadmay a 15% processing fee is
+  spread across 3 instalments. There is no interest rate to compound — the
+  total is fixed on day one.</p>
+  <p class="formula">total = down + financed × (1 + markup %) &nbsp;·&nbsp; instalment = financed × (1 + markup %) ÷ months</p>
+  <p><strong>Worked example:</strong> QistBazaar, Rs 100,000 phone, 3 months:
+  Rs 30,000 down, financed Rs 70,000 + 8% = Rs 75,600, so 3 instalments of
+  <strong>Rs 25,200</strong> and Rs 105,600 paid in total. Baadmay: Rs 10,000 →
+  total <strong>Rs 11,500</strong>, instalment Rs 3,833.</p>
+
+  <h2>12. Salary advance — one flat fee, repaid next payday</h2>
+  <p>Earned-wage access is not a loan: you draw part of the salary you have
+  already earned, pay one flat fee, and it is taken from your next salary.
+  There is no interest and no late fee.</p>
+  <p class="formula">total = amount drawn + flat fee</p>
+  <p><strong>Worked example:</strong> Abhi, Rs 10,000 drawn → fee Rs 150 →
+  <strong>Rs 10,150</strong> repaid from your next salary. (The fee is reported
+  as Rs 100 in older guides and Rs 150 in 2025–26 guides — unverified; the
+  calculator uses Rs 150, the higher figure.)</p>
+
+  <h2>13. "Rate on request" — when the calculator will not guess</h2>
+  <p>Some lenders publish no rate at all (UBL CashPlus, Standard Chartered,
+  NBP Advance Salary — where the figures even conflict). For those the
+  calculator shows no number: it tells you to ask for the Key Fact Statement
+  and use Custom loan with the rate the bank quotes you. A guessed rate would
+  be worse than no rate.</p>
+
+  <h2>Licensed nano loan apps</h2>
+  <p>The SECP whitelist (11 Sep 2026) lists 17 licensed nano loan apps. Their
+  rates are shown in-app only, so the calculator lists them — with their
+  licensed NBFC — on the calculator page, with the SECP guardrails: at most
+  Rs 25,000 per app and Rs 75,000 across all apps, tenure at most 90 days,
+  total cost at most the loan itself, APR at most 10× the SBP policy rate
+  (120% a year at the current 12%). Whether those caps survived the Nov 2025
+  amendments is unconfirmed — the calculator says so on screen. Any app NOT on
+  the whitelist is unauthorised: Barwaqt was delisted in Aug 2024, QisstPay's
+  app was removed in Jul 2024, and KalPay is not whitelisted.</p>
+
+  <h2>What "effective cost" and "annualised" mean</h2>
+  <p><strong>Effective cost %</strong> = (what you pay back − what you borrowed) ÷
+  what you borrowed. A Rs 20,000 loan repaid as Rs 24,000 costs 20%.</p>
+  <p><strong>Annualised cost</strong> = the same cost stretched to a year, by simple
+  proportion (cost % × 365 ÷ days). It is an approximation, shown so you can
+  compare a 28-day loan with a bank loan — it is not the lender's APR.</p>
+
+  <div class="warn">
+    <strong>Remember:</strong> these loans are expensive. A "small" 5% a week is
+    20% in a month and 40% in two months. Borrow only what you can repay on
+    time, and check the rate inside the app before you borrow — rates change
+    every quarter.
+  </div>
+
+  <p><a class="btn" href="/">Open the calculator →</a></p>
+</main>
+
+<footer>
+  <p>Loan Payback Calculator — an estimate from published rates, not the lender's
+  final word. This site does not lend money and collects no personal data.</p>
+</footer>
+
+<script src="/nav.js"></script>
+</body>
+</html>

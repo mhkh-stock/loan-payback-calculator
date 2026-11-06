@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loan Payback Calculator — قرض واپسی کیلکولیٹر | Pakistan</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="logo"><a href="/">💰 Loan Payback Calculator <span class="ur">قرض واپسی کیلکولیٹر</span></a></div>
+  <div class="menu-wrap">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-haspopup="menu" aria-expanded="false">⋮</button>
+    <div class="overflow-menu" id="overflowMenu" role="menu" hidden>
+      <div class="menu-group">Pages</div>
+      <a role="menuitem" href="/" aria-current="page">🏠 All loans</a>
+      <a role="menuitem" href="/how.html">📖 How it works</a>
+      <a role="menuitem" href="/sources.html">🔗 Sources</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>How much will you really pay back? <span class="ur">آپ کو واقعی کتنا واپس کرنا ہوگا؟</span></h1>
+    <p>Pick your loan below. The calculator shows the total payback, the
+    increase, and what late fees add as days pass — with the formula on screen,
+    so you can check every number yourself.</p>
+    <p><strong class="accent">This is an ESTIMATE</strong> from the published rates. It is not the
+    lender's final word. Always check the rate inside the app — or ask for the
+    Key Fact Statement — before you borrow.</p>
+    <p class="field-hint" id="benchmarks"></p>
+  </section>
+
+  <section class="card" id="manualSection">
+    <h2>🧮 Calculate any loan yourself <span class="ur">اپنا قرض خود حساب کریں</span></h2>
+    <p>Don't see your lender below? Enter everything yourself — the amount, the
+    rate, how it is charged, the tenure and the late fee — and the calculator
+    works it out exactly like it does for the listed loans. Nothing you type
+    leaves this page.</p>
+
+    <form id="manualForm" autocomplete="off">
+      <div class="row2">
+        <div>
+          <label for="mAmount">Loan amount (Rs)</label>
+          <input id="mAmount" type="number" min="1" step="1" value="20000" inputmode="numeric">
+        </div>
+        <div>
+          <label for="mBorrowDate">Borrow date</label>
+          <input id="mBorrowDate" type="date">
+        </div>
+      </div>
+
+      <label for="mMode">How is the rate charged?</label>
+      <select id="mMode">
+        <option value="weekly-simple">% per week — simple (not compounded)</option>
+        <option value="weekly-compound">% per week — compounded</option>
+        <option value="monthly-simple">% per month — simple</option>
+        <option value="flat-term" selected>Flat % for the whole term</option>
+        <option value="annual-emi">% per year — reducing balance (EMI)</option>
+        <option value="price-markup">Price markup % (BNPL-style)</option>
+        <option value="flat-fee">Flat fee (Rs)</option>
+      </select>
+
+      <div class="row2" id="mRateWrap">
+        <div id="mRateCell">
+          <label for="mRate" id="mRateLabel">Rate (%)</label>
+          <input id="mRate" type="number" min="0" step="0.1" value="20" inputmode="decimal">
+        </div>
+        <div>
+          <label for="mTenureValue">Tenure</label>
+          <div class="row2">
+            <input id="mTenureValue" type="number" min="1" step="1" value="30" inputmode="numeric">
+            <select id="mTenureUnit" aria-label="Tenure unit">
+              <option value="days" selected>days</option>
+              <option value="weeks">weeks</option>
+              <option value="months">months</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row2" id="mFeeWrap" hidden>
+        <div>
+          <label for="mFeeRs">Fee (Rs, one-off)</label>
+          <input id="mFeeRs" type="number" min="0" step="1" value="150" inputmode="numeric">
+        </div>
+        <div>
+          <p class="field-hint">Repaid from your next salary — the tenure above applies.</p>
+        </div>
+      </div>
+
+      <div class="row2" id="mDownWrap" hidden>
+        <div>
+          <label for="mDownPct">Down payment (%)</label>
+          <input id="mDownPct" type="number" min="0" max="100" step="1" value="30" inputmode="numeric">
+        </div>
+        <div>
+          <label for="mInstalments">Instalments</label>
+          <input id="mInstalments" type="number" min="1" step="1" value="3" inputmode="numeric">
+        </div>
+      </div>
+
+      <label for="mLateKind">Late fee</label>
+      <select id="mLateKind">
+        <option value="none" selected>No late fee</option>
+        <option value="one-off-pct">% of the loan — one-off</option>
+        <option value="per-instalment-pct">% of each instalment</option>
+        <option value="flat-rs">Flat Rs amount</option>
+      </select>
+
+      <div id="mLateWrap" hidden>
+        <div class="row2">
+          <div>
+            <label for="mLateValue" id="mLateValueLabel">Late fee (%)</label>
+            <input id="mLateValue" type="number" min="0" step="0.1" value="5" inputmode="decimal">
+          </div>
+          <div>
+            <label for="mGraceDays">Grace days</label>
+            <input id="mGraceDays" type="number" min="0" step="1" value="0" inputmode="numeric">
+          </div>
+        </div>
+        <div class="row2">
+          <div>
+            <label for="mLateCapRs">Late fee cap (Rs, 0 = no cap)</label>
+            <input id="mLateCapRs" type="number" min="0" step="1" value="0" inputmode="numeric">
+          </div>
+          <div id="mInstWrap2" hidden>
+            <label for="mInstalments2">Instalments</label>
+            <input id="mInstalments2" type="number" min="1" step="1" value="3" inputmode="numeric">
+            <p class="field-hint">How many equal instalments is the loan paid in?</p>
+          </div>
+        </div>
+      </div>
+
+      <label for="mCapKind">Fee cap (optional)</label>
+      <select id="mCapKind">
+        <option value="none" selected>No cap</option>
+        <option value="pct">% of the loan</option>
+        <option value="rs">Rs amount</option>
+      </select>
+      <div class="row2" id="mCapValWrap" hidden>
+        <div>
+          <label for="mCapValue">Cap value</label>
+          <input id="mCapValue" type="number" min="0" step="1" value="40" inputmode="decimal">
+          <p class="field-hint" id="mCapHint">Enter a % or Rs, matching the cap type above.</p>
+        </div>
+      </div>
+
+      <label for="mEarlyNote">Early repayment — optional note</label>
+      <input id="mEarlyNote" type="text" placeholder="e.g. 7% of the outstanding loan if I repay early" maxlength="120">
+      <p class="field-hint">Write what your lender charges for early repayment, so it shows with your result.</p>
+
+      <p><button class="btn" type="submit">Calculate — حساب لگائیں</button></p>
+      <p class="note">The result updates live as you type. Nothing you enter leaves this
+      page — the calculation runs in your browser, and nothing is stored.</p>
+    </form>
+
+    <div id="mResults" class="results" aria-live="polite">
+      <p class="big-label">You pay back on <span id="mrDate"></span></p>
+      <p class="big-number" id="mrTotal"></p>
+      <div class="kv"><span class="k">Loan amount</span><span class="v" id="mrPrincipal"></span></div>
+      <div class="kv"><span class="k">Markup / fee</span><span class="v" id="mrMarkup"></span></div>
+      <div class="kv"><span class="k">Late fee</span><span class="v" id="mrLate"></span></div>
+      <div class="kv"><span class="k">Extra cost</span><span class="v" id="mrCost"></span></div>
+      <div class="kv"><span class="k">Due date</span><span class="v" id="mrDue"></span></div>
+      <div class="kv" id="mrInstRow" hidden><span class="k">Each instalment</span><span class="v" id="mrInst"></span></div>
+      <div class="kv" id="mrDownRow" hidden><span class="k">Down payment</span><span class="v" id="mrDown"></span></div>
+      <div class="kv"><span class="k">Annualised cost (approx.)</span><span class="v" id="mrAnnual"></span></div>
+      <div class="warn" id="mrCapWarn" hidden></div>
+      <p class="verdict" id="mrVerdict"></p>
+      <h3>If you pay late</h3>
+      <p class="note">Compared with paying on your planned date (<span id="mrPlanDate"></span>).</p>
+      <div class="late-cards">
+        <div class="late-card"><p class="t">1 day late</p><p class="a" id="mrLate1"></p><p class="e" id="mrLate1x"></p><p class="small" id="mrLate1d"></p></div>
+        <div class="late-card"><p class="t">7 days late</p><p class="a" id="mrLate7"></p><p class="e" id="mrLate7x"></p><p class="small" id="mrLate7d"></p></div>
+        <div class="late-card"><p class="t">30 days late</p><p class="a" id="mrLate30"></p><p class="e" id="mrLate30x"></p><p class="small" id="mrLate30d"></p></div>
+      </div>
+      <h3>How the amount grows</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Date</th><th>Day</th><th>Fee so far</th><th>Late fee</th><th>You owe</th></tr></thead>
+        <tbody id="mrTimeline"></tbody>
+      </table></div>
+      <h3>The formula (check it yourself)</h3>
+      <p class="formula" id="mrFormula"></p>
+      <div id="mrNotes"></div>
+    </div>
+  </section>
+
+  <div class="search-box">
+    <span class="search-icon" aria-hidden="true">🔍</span>
+    <input id="search" type="search" placeholder="Find a loan — try 'Easypaisa', 'HBL', 'card', '0%'…" aria-label="Find a loan by name">
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+
+  <div id="picker"><p class="empty-note">Loading the loan list…</p></div>
+
+  <section class="card" id="nanoSection">
+    <h2>Licensed nano loan apps (SECP whitelist, 11 Sep 2026)</h2>
+    <p>These 17 apps are licensed by the SECP through a licensed NBFC. Their
+    rates are shown in-app only (Borrower Factsheet / Key Fact Statement) — no
+    public rate exists, so the calculator cannot price them. Tap an app, enter
+    the rate it shows you, and the calculator works it out — with the SECP
+    guardrails beside it.</p>
+    <div class="loan-grid" id="nanoApps"></div>
+    <div id="nanoGuardrails"></div>
+    <div id="nanoAvoid"></div>
+  </section>
+</main>
+
+<footer>
+  <p>Loan Payback Calculator — an estimate from published rates, not the lender's
+  final word. Rates change every quarter; verify inside the app before you borrow.
+  This site does not lend money and collects no personal data.</p>
+</footer>
+
+<script src="/calc.js"></script>
+<script src="/nav.js"></script>
+<script src="/manual.js"></script>
+<script src="/picker.js"></script>
+</body>
+</html>
