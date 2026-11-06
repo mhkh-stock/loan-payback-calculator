@@ -1,0 +1,1571 @@
+{
+ "as_of": "2026-11-06",
+ "benchmarks": {
+  "kibor_1y_as_of": "late Oct 2026 (12.68% offer as on 5 Oct 2026)",
+  "kibor_1y_pct": 12.8,
+  "next_mpc": "2026-12-14",
+  "note": "KIBOR changes daily — KIBOR-linked presets must use the live KIBOR at quote time. SBP policy rate 12% from 27 Oct 2026 (MPC 26 Oct 2026, corridor 11–13%).",
+  "sbp_policy_as_of": "2026-10-27",
+  "sbp_policy_rate_pct": 12
+ },
+ "nano_apps": [
+  {
+   "app": "Paisayaar",
+   "nbfc": "JingleCred Digital Financial Services Ltd",
+   "tag": "Nano & BNPL"
+  },
+  {
+   "app": "Aitemaad",
+   "nbfc": "4Sight Finance Services (Pvt) Ltd",
+   "tag": "Nano & BNPL"
+  },
+  {
+   "app": "Hakeem",
+   "nbfc": "Walee Financial Services (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "Fauri Cash",
+   "nbfc": "Pakisnova Microfinance Company (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "SmartQarza",
+   "nbfc": "Goldlion Financial (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "JazzCash (Android/iOS Digital Lending Tool)",
+   "nbfc": "JazzCash (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "Money Tap",
+   "nbfc": "Zanda Financials (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "Pakcredit",
+   "nbfc": "VisionCred Financial Services (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "Daira",
+   "nbfc": "Finleap Financial Services (Pvt) Ltd",
+   "tag": "Nano & BNPL"
+  },
+  {
+   "app": "Loan Lado",
+   "nbfc": "Easy Finance (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "CashBazar",
+   "nbfc": "Bluesky Financial Services (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "Sahara",
+   "nbfc": "Awami Financials (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "PaisaGhur",
+   "nbfc": "Quark Financials Pakistan (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "QarzMitra",
+   "nbfc": "Fintech Gharana Financial (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "ForiQarz",
+   "nbfc": "Foremost Financials Services Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "Ishtirak",
+   "nbfc": "Ishtirak Microfinance (Pvt) Ltd",
+   "tag": "Nano"
+  },
+  {
+   "app": "Fori Raqam",
+   "nbfc": "Original Khaata Financial Services (Pvt) Ltd",
+   "tag": "Nano"
+  }
+ ],
+ "nano_avoid": "Avoid any lending app NOT on the SECP whitelist — check the exact app name and the developer company name against the list. Barwaqt was delisted in Aug 2024, the QisstPay app was removed in Jul 2024, and KalPay is not whitelisted. Never install a loan app from an APK file, a Facebook ad or a shared link; never pay a fee before approval; never let an app read your contacts or photos. A 'personal micro-loan' repayable in 3, 7 or 14 days is illegal — the regulated minimum tenure is 30 days.",
+ "nano_guardrails": {
+  "apr_cap_note": "APR at most 10× the SBP policy rate (= 120% a year at the current 12% policy rate)",
+  "cooling_off_hours": 24,
+  "max_per_app_rs": 25000,
+  "max_rollovers": 2,
+  "max_tenure_days": 90,
+  "max_total_rs": 75000,
+  "no_compounding": true,
+  "no_upfront_fee_deduction": true,
+  "note": "SECP nano-loan caps from Circular 15 of 2022 and Circular 10 of 2023, as reported by Which.pk (updated 19 Oct 2026). Whether these caps survived the Nov 2025 amendments (SRO 2120(I)/2025) is UNCONFIRMED — treat them as the published guardrails, not as a guarantee.",
+  "total_cost_cap": "Total cost (all fees + interest + late penalties) at most equal to the loan itself (principal)"
+ },
+ "note": "Rates from the lenders' own schedules, read 2026-11-06. Easypaisa's schedule is Oct–Dec 2026 and a new one comes every quarter; bank schedules of charges are half-yearly or quarterly. Verify the rate inside the app — or ask for the Key Fact Statement — before you borrow. This file is the single source of truth for the calculator presets.",
+ "presets": [
+  {
+   "as_of": "2026-12-31",
+   "cap_pct": 40,
+   "cap_weeks": 8,
+   "category": "Wallet loans",
+   "due_days": 60,
+   "id": "easycash-app",
+   "late_fee": {
+    "kind": "none"
+   },
+   "lender": "Easypaisa Bank (Telenor Microfinance Bank)",
+   "max_amount": 25000,
+   "min_amount": 200,
+   "model": "weekly-compound",
+   "name": "Easypaisa Easycash (App)",
+   "name_ur": "ایزی پیسہ ایزی کیش (ایپ)",
+   "notes": "Markup per day of use; early repayment keeps markup for unused days (charged as early-repayment fee). Cycle bands change every quarter: Oct–Dec 2026 bands are 1–30 / 31–60 / 61+; Jan–Mar 2026 bands were 1–10 / 11–20 / 21+. The calculator uses the Oct–Dec 2026 bands.",
+   "rate_line": "5% a week (cycles 1–30), 4.5% (31–60), 4% (61+), compounded every 7 days, cap 40% over 8 weeks. No late fee.",
+   "source": "Easypaisa Bank schedule of charges, Oct–Dec 2026 (via pakera.pk)",
+   "source_url": "https://pakera.pk/easypaisa-easycash-loan-cost-5-percent-week-bnpl-pakistan/",
+   "verified": true,
+   "weekly_rates": [
+    {
+     "rate": 5,
+     "upto": 30
+    },
+    {
+     "rate": 4.5,
+     "upto": 60
+    },
+    {
+     "rate": 4,
+     "upto": null
+    }
+   ],
+   "eligibility": "Easypaisa account holders, Pakistan citizens. The offer depends on your account history (not published).",
+   "early": "Markup already received for unused days is charged as an early-repayment fee — no refund of unused days."
+  },
+  {
+   "as_of": "2026-12-31",
+   "category": "Wallet loans",
+   "due_days": 30,
+   "fee_tiers": [
+    {
+     "fee": 20,
+     "upto": 30
+    },
+    {
+     "fee": 18,
+     "upto": 60
+    },
+    {
+     "fee": 16,
+     "upto": null
+    }
+   ],
+   "id": "easycash-ussd",
+   "late_fee": {
+    "cap_rs": null,
+    "grace_days": 2,
+    "kind": "one-off-pct",
+    "pct": 5
+   },
+   "lender": "Easypaisa Bank (Telenor Microfinance Bank)",
+   "max_amount": 25000,
+   "min_amount": 200,
+   "model": "flat-term",
+   "name": "Easypaisa Easycash (USSD)",
+   "name_ur": "ایزی پیسہ ایزی کیش (یو ایس ایس ڈی)",
+   "notes": "The flat fee applies in full for the 30-day term. Pick your loan-cycle tier above. Cycle bands change every quarter: Oct–Dec 2026 bands are 1–30 / 31–60 / 61+; Jan–Mar 2026 bands were 1–10 / 11–20 / 21+.",
+   "rate_line": "Flat 20% / 18% / 16% for 30 days by loan cycle. Late fee 5% of the loan, one-off, after 2 days grace.",
+   "source": "Easypaisa Bank schedule of charges, Oct–Dec 2026 (via pakera.pk)",
+   "source_url": "https://pakera.pk/easypaisa-easycash-loan-cost-5-percent-week-bnpl-pakistan/",
+   "verified": true,
+   "eligibility": "Easypaisa account holders, Pakistan citizens. The offer depends on your account history (not published).",
+   "early": "Markup already received for unused days is charged as an early-repayment fee — no refund of unused days."
+  },
+  {
+   "as_of": "2026-12-31",
+   "category": "Wallet loans",
+   "due_days": 30,
+   "id": "easypaisa-bnpl",
+   "late_fee": {
+    "cap_rs": null,
+    "grace_days": 0,
+    "kind": "one-off-pct",
+    "pct": 5
+   },
+   "lender": "Easypaisa Bank (Telenor Microfinance Bank)",
+   "max_amount": 50000,
+   "min_amount": 100,
+   "model": "flat-term",
+   "name": "Easypaisa BNPL (Excellent rating)",
+   "name_ur": "ایزی پیسہ ابھی خریدیں بعد میں ادا کریں (بہترین ریٹنگ)",
+   "notes": "No grace period is stated for BNPL, so the late fee counts from the first day past the due date. This 10% / 20% price is ONLY for an 'Excellent' credit rating — other ratings pay more (see the 'other ratings' preset).",
+   "rate_line": "10% for 14 days or 20% for 30 days — Excellent credit rating only. Late fee one-off 5% of the loan.",
+   "source": "Easypaisa Bank schedule of charges, Oct–Dec 2026 (via pakera.pk)",
+   "source_url": "https://pakera.pk/buy-now-pay-later-pakistan-worth-it/",
+   "term_options": [
+    {
+     "days": 14,
+     "fee_pct": 10,
+     "label": "14 days"
+    },
+    {
+     "days": 30,
+     "fee_pct": 20,
+     "label": "30 days"
+    }
+   ],
+   "verified": true,
+   "eligibility": "Easypaisa users, by internal credit rating.",
+   "early": "Markup already received for unused days is charged as an early-repayment fee — no refund of unused days."
+  },
+  {
+   "as_of": "2026-12-31",
+   "category": "Wallet loans",
+   "due_days": 30,
+   "id": "easypaisa-bnpl-other",
+   "late_fee": {
+    "cap_rs": null,
+    "grace_days": 0,
+    "kind": "one-off-pct",
+    "pct": 5
+   },
+   "lender": "Easypaisa Bank (Telenor Microfinance Bank)",
+   "max_amount": 50000,
+   "min_amount": 100,
+   "model": "flat-term",
+   "name": "Easypaisa BNPL (other ratings)",
+   "name_ur": "ایزی پیسہ ابھی خریدیں بعد میں ادا کریں (دیگر ریٹنگ)",
+   "notes": "Your exact rate depends on your Easypaisa credit rating. Bands in the schedule: Very Good 11–12.5% (14 days) / 22–25% (30 days); Good 12–17.5% / 24–35%; Fair up to 17.5% / 35% (packages and loads only). These options show the ends of each band.",
+   "rate_line": "11–17.5% for 14 days or 22–35% for 30 days, by credit rating. Late fee one-off 5% of the loan.",
+   "source": "Easypaisa Bank schedule of charges, Oct–Dec 2026 (via pakera.pk)",
+   "source_url": "https://pakera.pk/buy-now-pay-later-pakistan-worth-it/",
+   "term_options": [
+    {
+     "days": 14,
+     "fee_pct": 11,
+     "label": "14 days — Very Good rating"
+    },
+    {
+     "days": 14,
+     "fee_pct": 17.5,
+     "label": "14 days — Good rating"
+    },
+    {
+     "days": 30,
+     "fee_pct": 22,
+     "label": "30 days — Very Good rating"
+    },
+    {
+     "days": 30,
+     "fee_pct": 35,
+     "label": "30 days — Good rating"
+    }
+   ],
+   "verified": true,
+   "eligibility": "Easypaisa users, by internal credit rating.",
+   "early": "Markup already received for unused days is charged as an early-repayment fee — no refund of unused days."
+  },
+  {
+   "as_of": "2026-11-06",
+   "cap_pct": 40,
+   "category": "Wallet loans",
+   "due_days": 28,
+   "id": "jazzcash-readycash",
+   "late_fee": {
+    "kind": "none"
+   },
+   "lender": "Mobilink Microfinance Bank",
+   "max_amount": 50000,
+   "max_days": 56,
+   "max_weeks": 8,
+   "min_amount": 100,
+   "model": "weekly-simple",
+   "name": "JazzCash ReadyCash",
+   "name_ur": "جاز کیش ریڈی کیش",
+   "notes": "Rs 100 → 105 / 110 / 115 / 120 over weeks 1–4. Partial repayment lowers the fee; this calculator assumes full repayment. The FAQ says Rs 100–50,000 but the page's example table uses Rs 65,000 — the calculator uses the FAQ limit.",
+   "rate_line": "5% a week, simple (not compounded). Due in 28 days, max 56 days, cap 40%. No separate late fee.",
+   "source": "JazzCash ReadyCash page + Mobilink Bank schedule of charges",
+   "source_url": "https://www.jazzcash.com.pk/borrow-money/readycash-loan",
+   "verified": true,
+   "weekly_rate_pct": 5,
+   "eligibility": "Selected JazzCash users, by credit score. One loan at a time.",
+   "early": "Partial or full repayment anytime (app, USSD or retailer); it reduces the total charges."
+  },
+  {
+   "as_of": "2026-11-06",
+   "cap_pct": 40,
+   "category": "Wallet loans",
+   "due_days": 28,
+   "id": "jazzcash-readyload",
+   "late_fee": {
+    "kind": "none"
+   },
+   "lender": "Mobilink Microfinance Bank",
+   "max_amount": 50000,
+   "max_days": 56,
+   "max_weeks": 8,
+   "min_amount": 100,
+   "model": "weekly-simple",
+   "name": "JazzCash ReadyLoad",
+   "name_ur": "جاز کیش ریڈی لوڈ",
+   "notes": "Same 5%-a-week charge as ReadyCash, for mobile loads and packages. Partial repayment allowed.",
+   "rate_line": "5% a week, simple, max 8 weeks, cap 40%. No separate late fee.",
+   "source": "JazzCash ReadyCash page (ReadyLoad section)",
+   "source_url": "https://www.jazzcash.com.pk/borrow-money/readycash-loan",
+   "verified": true,
+   "weekly_rate_pct": 5,
+   "eligibility": "JazzCash users.",
+   "early": "Partial repayment allowed."
+  },
+  {
+   "as_of": "2026-12-31",
+   "category": "Buy Now Pay Later",
+   "due_days": 30,
+   "id": "daraz-paylater",
+   "late_fee": {
+    "cap_rs": 800,
+    "grace_days": 0,
+    "kind": "per-instalment-pct",
+    "pct": 5
+   },
+   "lender": "Easypaisa Bank (Telenor Microfinance Bank), inside the Daraz app",
+   "max_amount": 200000,
+   "min_amount": 1000,
+   "model": "flat-term",
+   "name": "Daraz PayLater",
+   "name_ur": "دراز پے لیٹر",
+   "notes": "3-month plan = 3 monthly instalments of 10% each. Late fee is charged per overdue instalment.",
+   "rate_line": "16% for 1 month, 30% for 3 months. APR 192% / 120%. Late fee 5% per instalment, capped at Rs 800.",
+   "source": "Easypaisa Bank schedule of charges, Oct–Dec 2026 (via pakera.pk)",
+   "source_url": "https://pakera.pk/daraz-paylater-easypaisa-16-percent-month-apr-192-pakistan/",
+   "term_options": [
+    {
+     "days": 30,
+     "fee_pct": 16,
+     "instalments": 1,
+     "label": "1 month"
+    },
+    {
+     "days": 90,
+     "fee_pct": 30,
+     "instalments": 3,
+     "label": "3 months"
+    }
+   ],
+   "verified": true,
+   "eligibility": "Daraz app checkout users.",
+   "early": "Markup for unused days is kept as an early-repayment fee."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Buy Now Pay Later",
+   "due_days": 90,
+   "id": "jazzcash-bnpl",
+   "late_fee": {
+    "cap_rs": null,
+    "grace_days": 0,
+    "kind": "per-instalment-pct",
+    "pct": 10
+   },
+   "lender": "Mobilink Microfinance Bank",
+   "max_amount": 50000,
+   "min_amount": 100,
+   "model": "flat-term",
+   "name": "JazzCash Yeylo BNPL",
+   "name_ur": "جاز کیش ییلو ابھی خریدیں بعد میں ادا کریں",
+   "notes": "15% = 5% per instalment. Instalments at purchase, +30 days, +60 days. Early repayment is free; the late fee 'may apply'. Verified against the JazzCash Yeylo page and merchant terms.",
+   "rate_line": "15% service fee, 3 instalments. Late fee 10% of the overdue instalment.",
+   "source": "JazzCash Yeylo page + merchant terms & conditions",
+   "source_url": "https://www.jazzcash.com.pk/move-money/cards",
+   "term_options": [
+    {
+     "days": 90,
+     "fee_pct": 15,
+     "instalments": 3,
+     "label": "3 instalments"
+    }
+   ],
+   "verified": true,
+   "eligibility": "JazzCash consumer-app users, at partner merchants or by QR.",
+   "early": "No penalty; repaying early restores your limit immediately."
+  },
+  {
+   "annual_rate_max": 28,
+   "annual_rate_min": 26,
+   "annual_rate_pct": 27,
+   "as_of": "2026-10-24",
+   "category": "Microfinance banks",
+   "due_days": 1080,
+   "id": "mobilink-salary",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Mobilink Microfinance Bank",
+   "max_amount": 5000000,
+   "min_amount": 50000,
+   "model": "annual-reducing",
+   "name": "Mobilink Salary Loan",
+   "name_ur": "موبی لنک تنخواہ قرض",
+   "notes": "APR 26–28% (flat 14.06–15.22%). The calculator uses 27% (middle of the range) — type your exact rate if the bank quoted one. Processing fee: Rs 25,000 or 5% of the loan, whichever is lower. Pensioners: Rs 50,000–500,000.",
+   "rate_editable": true,
+   "rate_line": "APR 26–28% a year, reducing balance (EMI). Tenure 1–5 years. Late fee per the schedule of charges (not published here).",
+   "source": "Mobilink Bank product pricing, 24 Oct 2026",
+   "source_url": "https://mobilinkbank.com/assets/documents/Product-Pricing-Lending-Applicable-24th-October-2026.pdf",
+   "term_months_default": 36,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48,
+    60
+   ],
+   "verified": true,
+   "eligibility": "Salaried and pensioners. Salary Loan Rs 50,000–5,000,000 (pensioners Rs 50,000–500,000).",
+   "early": "Per the schedule of charges — not published here."
+  },
+  {
+   "annual_rate_max": 39,
+   "annual_rate_min": 38,
+   "annual_rate_pct": 38.5,
+   "as_of": "2026-10-24",
+   "category": "Microfinance banks",
+   "due_days": 360,
+   "id": "mobilink-fori-cash",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Mobilink Microfinance Bank",
+   "max_amount": 500000,
+   "min_amount": 25000,
+   "model": "annual-reducing",
+   "name": "Mobilink Fori Cash (gold)",
+   "name_ur": "موبی لنک فوری کیش (سونا)",
+   "notes": "Gold-backed loan. APR 38–39%; the calculator uses 38.5% (middle). No processing fee up to Rs 100,000; 1.5% above Rs 1,000,000.",
+   "rate_editable": true,
+   "rate_line": "APR 38–39% a year, reducing balance (EMI). Tenure 12 months. Late fee per the schedule of charges (not published here).",
+   "source": "Mobilink Bank product pricing, 24 Oct 2026",
+   "source_url": "https://mobilinkbank.com/assets/documents/Product-Pricing-Lending-Applicable-24th-October-2026.pdf",
+   "term_months_default": 12,
+   "term_months_options": [
+    12
+   ],
+   "verified": true,
+   "eligibility": "Gold owners. Rs 25,000–500,000.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "annual_rate_pct": 28,
+   "as_of": "2026-10-24",
+   "category": "Microfinance banks",
+   "due_days": 360,
+   "id": "mobilink-tech",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Mobilink Microfinance Bank",
+   "max_amount": 500000,
+   "min_amount": 25000,
+   "model": "annual-reducing",
+   "name": "Mobilink Tech Gadgets Financing",
+   "name_ur": "موبی لنک ٹیک گیجٹس فنانسنگ",
+   "notes": "APR 28%. Processing fee 1% of the loan.",
+   "rate_line": "APR 28% a year, reducing balance (EMI). Tenure 3 / 6 / 9 / 12 months. Late fee per the schedule of charges (not published here).",
+   "source": "Mobilink Bank product pricing, 24 Oct 2026",
+   "source_url": "https://mobilinkbank.com/assets/documents/Product-Pricing-Lending-Applicable-24th-October-2026.pdf",
+   "term_months_default": 12,
+   "term_months_options": [
+    3,
+    6,
+    9,
+    12
+   ],
+   "verified": true,
+   "eligibility": "Rs 25,000–500,000.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "annual_rate_max": 35.99,
+   "annual_rate_min": 1,
+   "annual_rate_pct": 35.99,
+   "as_of": "2026-06-30",
+   "category": "Bank personal loans",
+   "due_days": 1080,
+   "early_fee_note": "Early settlement: 7% of the outstanding amount. Partial payment: 5%, once only, not in year 1, max 6 instalments.",
+   "id": "hbl-personal",
+   "late_fee": {
+    "flat_rs": 1500,
+    "kind": "flat-rs-per-instalment"
+   },
+   "lender": "Habib Bank Ltd (HBL)",
+   "max_amount": 3000000,
+   "min_amount": 25000,
+   "model": "annual-reducing",
+   "name": "HBL PersonalLoan",
+   "name_ur": "ایچ بی ایل ذاتی قرض",
+   "notes": "Fixed rate, up to 35.99% depending on your category — the calculator uses 35.99% (the highest). Your rate may be lower; type it if you know it. Processing fee: Rs 6,000 or 1.40%, whichever is higher (50% off for women). Late fee Rs 1,500 + FED per late payment. The Jan–Jun 2026 schedule is now stale — check the Jul–Dec 2026 edition.",
+   "rate_editable": true,
+   "rate_line": "Fixed, up to 35.99% a year, reducing balance (EMI). Tenure 12–48 months. Late fee Rs 1,500 + FED per late payment.",
+   "source": "HBL PersonalLoan schedule of bank charges, Jan–Jun 2026",
+   "source_url": "https://www.hbl.com/assets/documents/PersonalLoan_SOBC_Jan_to_Jun_2026.pdf",
+   "term_months_default": 36,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48
+   ],
+   "verified": true,
+   "eligibility": "Salaried, salary credited to HBL. Age 21–61 at maturity. Top-up after 12 months.",
+   "early": "7% of the outstanding amount. Partial payment 5%, once only, not in year 1, max 6 instalments."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Bank personal loans",
+   "due_days": 1080,
+   "early_fee_note": "Early settlement: year 1: 10%, years 2–3: 6%, year 4+: 5% of the prepaid amount.",
+   "id": "mcb-personal",
+   "kibor_default": 12.8,
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "MCB Bank",
+   "max_amount": 2000000,
+   "min_amount": 50000,
+   "model": "kibor-spread",
+   "name": "MCB Personal Loan",
+   "name_ur": "ایم سی بی ذاتی قرض",
+   "notes": "1-year KIBOR + 14% (qualifying credit history) / + 16% (non-qualifying) — about 26.8–28.8% at October KIBOR. KIBOR changes daily; check today's rate. Processing fee 1.5% or Rs 5,000, whichever is higher.",
+   "rate_line": "1-year KIBOR + 14% / + 16% a year, reducing balance (EMI). Tenure 12–48 months. Late fee per the schedule of charges (not published here).",
+   "source": "MCB Bank personal loan page + FAQ",
+   "source_url": "https://www.mcb.com.pk/personal/personal/consumer-loans/personal-loan",
+   "spread_options": [
+    {
+     "label": "Qualifying credit history (+14%)",
+     "spread": 14
+    },
+    {
+     "label": "Non-qualifying credit history (+16%)",
+     "spread": 16
+    }
+   ],
+   "term_months_default": 36,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48
+   ],
+   "verified": true,
+   "eligibility": "Salaried (private, government, armed forces). Also holders of any bank's card, loan or overdraft. No collateral.",
+   "early": "Year 1: 10%, years 2–3: 6%, year 4+: 5% of the prepaid amount."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Bank personal loans",
+   "due_days": 1080,
+   "id": "alfalah-instant",
+   "kibor_default": 12.8,
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Bank Alfalah",
+   "max_amount": 750000,
+   "min_amount": 50000,
+   "model": "kibor-spread",
+   "name": "Bank Alfalah Instant Loan",
+   "name_ur": "بینک الفلاح فوری قرض",
+   "notes": "1-year KIBOR + 18% — about 30.7% at October KIBOR. KIBOR changes daily; check today's rate. Alfalah account at least 1 year old; via the Alfa app, under 60 seconds.",
+   "rate_line": "1-year KIBOR + 18% a year, reducing balance (EMI). Tenure 12–48 months. Late fee per the schedule of charges (not published here).",
+   "source": "Bank Alfalah instant loan page",
+   "source_url": "https://bankalfalah.com/personal-banking/loans/instant-loan/",
+   "spread_pct": 18,
+   "term_months_default": 36,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48
+   ],
+   "verified": true,
+   "eligibility": "Alfalah account at least 1 year old, 6-month average balance benchmark, never defaulted, debt-burden OK. Via the Alfa app.",
+   "early": "Partial prepayment / early settlement offered (charge per the schedule of charges)."
+  },
+  {
+   "annual_rate_pct": 31,
+   "as_of": "2026-10-02",
+   "category": "Bank personal loans",
+   "due_days": 1080,
+   "id": "askari-personal",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Askari Bank",
+   "max_amount": 4000000,
+   "min_amount": 50000,
+   "model": "annual-reducing",
+   "name": "Askari Personal Finance",
+   "name_ur": "عسکری ذاتی مالیات",
+   "notes": "Fixed rate by category. Balloon / early-termination option available; charges per the schedule of charges. Top-up after every 3 months.",
+   "rate_line": "Fixed 31% / 33% (salaried) or 33% / 37% (self-employed / business) a year, reducing balance (EMI). Tenure 12–48 months. Late fee per the schedule of charges (not published here).",
+   "rate_options": [
+    {
+     "label": "Salaried — branch (31%)",
+     "rate": 31
+    },
+    {
+     "label": "Salaried — non-branch (33%)",
+     "rate": 33
+    },
+    {
+     "label": "Self-employed / business — branch (33%)",
+     "rate": 33
+    },
+    {
+     "label": "Self-employed / business — non-branch (37%)",
+     "rate": 37
+    }
+   ],
+   "source": "Askari Bank personal finance page (updated 2 Oct 2026)",
+   "source_url": "https://askaribank.com/personal/loans/personal-finance",
+   "term_months_default": 36,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48
+   ],
+   "verified": true,
+   "eligibility": "Salaried (min income Rs 35,000–80,000 by employer category), pensioners (Rs 40,000), self-employed / business (Rs 100,000–150,000). Age 21–60 (65 for self-employed / pensioners). Approved-company list.",
+   "early": "Balloon / early-termination option available, charges per the schedule of charges. Top-up after every 3 months."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Bank personal loans",
+   "due_days": 1080,
+   "id": "js-cashasaan",
+   "kibor_default": 12.8,
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "JS Bank",
+   "max_amount": 4000000,
+   "min_amount": 60000,
+   "model": "kibor-spread",
+   "name": "JS CashAsaan",
+   "name_ur": "جے ایس کیش آسان",
+   "notes": "The spread is set by the bank per customer and is left BLANK in the Key Fact Statement — the rate shown here is KIBOR only until you type your spread. Secondary sources suggest about 30% a year in total. Processing fee: Rs 4,000 or 1.25%, whichever is higher (+ FED). KIBOR is taken on the 1st day of the approval month and repriced yearly.",
+   "rate_line": "1-year KIBOR + spread (set per customer — blank in the Key Fact Statement), reducing balance (EMI). Tenure 12–48 months. Late fee per the schedule of charges (not published here).",
+   "source": "JS Bank CashAsaan Key Fact Statement",
+   "source_url": "https://www.jsbl.com/wp-content/uploads/2026/05/JS-CashAssanKFS-200426.pdf",
+   "spread_editable": true,
+   "spread_max": 40,
+   "spread_min": 0,
+   "spread_pct": 0,
+   "term_months_default": 36,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48
+   ],
+   "verified": true,
+   "eligibility": "Salaried (HBC/NTI), self-employed / business. Balance-transfer + top-up variants.",
+   "early": "Per the Key Fact Statement — not extracted."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Bank personal loans",
+   "due_days": 1080,
+   "id": "allied-personal",
+   "kibor_default": 12.8,
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Allied Bank",
+   "max_amount": 3000000,
+   "min_amount": 30000,
+   "model": "kibor-spread",
+   "name": "Allied Personal Finance",
+   "name_ur": "الائیڈ ذاتی مالیات",
+   "notes": "1-year KIBOR + 14% to + 18% (up to +17% salaried, +18% self-employed). Some sources quote a minimum of KIBOR + 10% — that conflicts; verify in the Key Fact Statement. The calculator uses +16% (middle).",
+   "rate_line": "1-year KIBOR + 14% to + 18% a year, reducing balance (EMI). Tenure 12–48 months. Late fee per the schedule of charges (not published here).",
+   "source": "Secondary: thewealthtrend (Aug 2026) / jobswebpk (30 Oct 2026)",
+   "source_url": "http://jobswebpk.blogspot.com/2026/10/personal-loan-pakistan.html",
+   "spread_editable": true,
+   "spread_max": 18,
+   "spread_min": 14,
+   "spread_pct": 16,
+   "term_months_default": 36,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48
+   ],
+   "verified": false,
+   "eligibility": "Salaried and self-employed. Lahore, Karachi, Islamabad, Rawalpindi, Faisalabad, Multan, Sialkot, Gujranwala, Hyderabad.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Bank personal loans",
+   "due_days": 1080,
+   "id": "fwbl-salary",
+   "kibor_default": 12.8,
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "First Women Bank",
+   "max_amount": 2000000,
+   "min_amount": 50000,
+   "model": "kibor-spread",
+   "name": "First Women Bank Salary Loan",
+   "name_ur": "فرسٹ ویمن بینک تنخواہ قرض",
+   "notes": "1-year KIBOR + 6% (women and persons with disabilities) / + 7% (men) — the lowest margin found. Processing fee: Rs 5,000 or 1.25%, whichever is higher. Tenure per the bank's schedule — the calculator offers 12–48 months.",
+   "rate_line": "1-year KIBOR + 6% / + 7% a year, reducing balance (EMI). Tenure per bank schedule. Late fee per the schedule of charges (not published here).",
+   "source": "Secondary: jobswebpk (30 Oct 2026); page undated — verify at the branch",
+   "source_url": "http://jobswebpk.blogspot.com/2026/10/personal-loan-pakistan.html",
+   "spread_options": [
+    {
+     "label": "Women / persons with disabilities (+6%)",
+     "spread": 6
+    },
+    {
+     "label": "Men (+7%)",
+     "spread": 7
+    }
+   ],
+   "term_months_default": 36,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48
+   ],
+   "verified": false,
+   "eligibility": "Salary account with First Women Bank. Age 21–60 at maturity.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "annual_rate_pct": 16.55,
+   "as_of": "2026-10-23",
+   "category": "Islamic financing",
+   "due_days": 720,
+   "id": "meezan-personal",
+   "late_fee": {
+    "kind": "charity"
+   },
+   "lender": "Meezan Bank",
+   "max_amount": 1000000,
+   "min_amount": 50000,
+   "model": "annual-flat",
+   "name": "Meezan Islamic Personal Finance",
+   "name_ur": "میزان اسلامی ذاتی مالیات",
+   "notes": "Musawamah: the bank sells you fund units at an agreed fixed total price — the profit does not compound like interest. The 16.55% profit rate is a limited-time promo ('lowest in market'). Late payment goes to charity, not the bank's income — the amount is set in your contract and is not added here. Meezan Payroll Partner account holders only.",
+   "rate_line": "16.55% profit a year (promo), fixed sale price (Musawamah). Tenure 12–48 months. Late payment goes to charity.",
+   "source": "Meezan Bank's own promo post, 23 Oct 2026",
+   "source_url": "https://www.facebook.com/MeezanBank/posts/pfbid0eapRqnDon9rYn414YLqyEfok6HdU7PpaKvu41mY44dEHNdtNDm8ycfVbFainiFzFl",
+   "term_months_default": 24,
+   "term_months_options": [
+    12,
+    24,
+    36,
+    48
+   ],
+   "verified": true,
+   "eligibility": "Meezan Payroll Partner account holders only.",
+   "early": "Not published — check the contract. The bank is not obliged to discount the price for early payment."
+  },
+  {
+   "as_of": "2026-10-06",
+   "category": "Buy Now Pay Later",
+   "down_pct": 30,
+   "due_days": 360,
+   "id": "qistbazaar",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "QistBazaar (Pvt) Ltd",
+   "max_amount": 500000,
+   "min_amount": 1000,
+   "model": "price-markup",
+   "name": "QistBazaar",
+   "name_ur": "قسط بازار",
+   "notes": "Musawamah — the profit is built into the instalment price, no separate interest. Example: Rs 100,000 phone, 30% down (Rs 30,000), financed Rs 70,000 → 3 months total Rs 75,600 (+8%). The advance varies by product. Late fee not published — ask QistBazaar.",
+   "rate_line": "Price markup on the financed amount after 30% down: +8% (3 mo) / +18% (6 mo) / +28% (9 mo) / +37% (12 mo). Late fee not published.",
+   "source": "Samsung Pakistan BNPL page + Pakera BNPL guide (6 Oct 2026)",
+   "source_url": "https://www.samsung.com/pk/offer/buy-now-pay-later/",
+   "term_options": [
+    {
+     "days": 90,
+     "instalments": 3,
+     "label": "3 months",
+     "markup_pct": 8
+    },
+    {
+     "days": 180,
+     "instalments": 6,
+     "label": "6 months",
+     "markup_pct": 18
+    },
+    {
+     "days": 270,
+     "instalments": 9,
+     "label": "9 months",
+     "markup_pct": 28
+    },
+    {
+     "days": 360,
+     "instalments": 12,
+     "label": "12 months",
+     "markup_pct": 37
+    }
+   ],
+   "verified": true,
+   "eligibility": "No card needed; document checks.",
+   "early": "Not published."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Buy Now Pay Later",
+   "down_pct": 0,
+   "due_days": 90,
+   "id": "baadmay",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "MG Financial Services Ltd",
+   "max_amount": 25000,
+   "min_amount": 1000,
+   "model": "price-markup",
+   "name": "Baadmay",
+   "name_ur": "بعد میں",
+   "notes": "15% processing fee on the total order, spread across 3 instalments. Shariah-compliant. Overdue → no further transactions; default is reported to credit bureaus. Early payment allowed. New users Rs 1,000–25,000; some merchants to Rs 200,000.",
+   "rate_line": "15% processing fee, 3 instalments (1st at purchase). Late fee not published as a %.",
+   "source": "Baadmay merchant FAQs",
+   "source_url": "https://www.vegas.pk/baadmay-faqs",
+   "term_options": [
+    {
+     "days": 90,
+     "instalments": 3,
+     "label": "3 instalments",
+     "markup_pct": 15
+    }
+   ],
+   "verified": true,
+   "eligibility": "Pakistani bank Visa/Mastercard required (no virtual or wallet cards, no cash on delivery).",
+   "early": "Pay an instalment early anytime in the app."
+  },
+  {
+   "annual_rate_pct": 24,
+   "as_of": "2026-10-06",
+   "category": "Card instalments",
+   "due_days": 360,
+   "early_fee_note": "Early settlement: 6% of the remaining principal.",
+   "id": "hbl-instalment",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Habib Bank Ltd (HBL)",
+   "max_amount": 500000,
+   "min_amount": 1000,
+   "model": "annual-reducing",
+   "name": "HBL Card Instalment Plan",
+   "name_ur": "ایچ بی ایل کارڈ قسط منصوبہ",
+   "notes": "Processing fee 2.5% (5% on the September 0% offer). Amount up to your card limit.",
+   "rate_line": "24% a year, reducing balance (EMI). Tenure 3–36 months. Card late fee per the schedule of charges (not published here).",
+   "source": "Pakera credit-card instalment comparison (6 Oct 2026, from Jul–Dec 2026 schedules of charges)",
+   "source_url": "https://pakera.pk/credit-card-instalment-plans-pakistan-compared/",
+   "term_months_default": 12,
+   "term_months_options": [
+    3,
+    6,
+    12,
+    18,
+    24,
+    36
+   ],
+   "verified": true,
+   "eligibility": "HBL credit-card holders.",
+   "early": "6% of the remaining principal."
+  },
+  {
+   "annual_rate_pct": 36,
+   "as_of": "2026-10-06",
+   "category": "Card instalments",
+   "due_days": 360,
+   "id": "askari-epp",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Askari Bank",
+   "max_amount": 500000,
+   "min_amount": 10000,
+   "model": "annual-reducing",
+   "name": "Askari Easy Payment Plan (EPP)",
+   "name_ur": "عسکری آسان ادائیگی منصوبہ",
+   "notes": "36% a year (3% a month). Processing fee Rs 1,500 or 3.75%.",
+   "rate_line": "36% a year, reducing balance (EMI). Tenure up to 24 months. Card late fee per the schedule of charges (not published here).",
+   "source": "Pakera credit-card instalment comparison (6 Oct 2026)",
+   "source_url": "https://pakera.pk/credit-card-instalment-plans-pakistan-compared/",
+   "term_months_default": 12,
+   "term_months_options": [
+    3,
+    6,
+    12,
+    18,
+    24
+   ],
+   "verified": true,
+   "eligibility": "Askari credit-card holders.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "annual_rate_pct": 39,
+   "as_of": "2026-10-06",
+   "category": "Card instalments",
+   "due_days": 360,
+   "early_fee_note": "Early settlement: Rs 1,200 or 6%.",
+   "id": "mcb-iplan",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "MCB Bank",
+   "max_amount": 500000,
+   "min_amount": 1000,
+   "model": "annual-reducing",
+   "name": "MCB i-plan",
+   "name_ur": "ایم سی بی آئی پلان",
+   "notes": "3.25% a month, about 39% a year. Processing fee Rs 1,200 or 3%. Tenure not published — check your bank.",
+   "rate_line": "3.25% a month (≈39% a year), reducing balance (EMI). Card late fee per the schedule of charges (not published here).",
+   "source": "Pakera credit-card instalment comparison (6 Oct 2026)",
+   "source_url": "https://pakera.pk/credit-card-instalment-plans-pakistan-compared/",
+   "term_months_default": 12,
+   "term_months_options": [
+    3,
+    6,
+    12,
+    24,
+    36
+   ],
+   "verified": true,
+   "eligibility": "MCB credit-card holders.",
+   "early": "Rs 1,200 or 6%."
+  },
+  {
+   "annual_rate_max": 40.74,
+   "annual_rate_min": 35.23,
+   "annual_rate_pct": 38,
+   "as_of": "2026-10-06",
+   "category": "Card instalments",
+   "due_days": 360,
+   "early_fee_note": "Early settlement: 5% or Rs 1,000.",
+   "id": "alfalah-sbs",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Bank Alfalah",
+   "max_amount": 500000,
+   "min_amount": 1000,
+   "model": "annual-reducing",
+   "name": "Bank Alfalah Step by Step",
+   "name_ur": "بینک الفلاح قدم بہ قدم",
+   "notes": "Up to 35.23–40.74% a year. The calculator uses 38% (middle) — type your exact rate if you know it. Processing fee 2.5% or Rs 1,500, up to 25%.",
+   "rate_editable": true,
+   "rate_line": "Up to 35.23–40.74% a year, reducing balance (EMI). Tenure 3–36 months. Card late fee per the schedule of charges (not published here).",
+   "source": "Pakera credit-card instalment comparison (6 Oct 2026)",
+   "source_url": "https://pakera.pk/credit-card-instalment-plans-pakistan-compared/",
+   "term_months_default": 12,
+   "term_months_options": [
+    3,
+    6,
+    12,
+    18,
+    24,
+    36
+   ],
+   "verified": true,
+   "eligibility": "Bank Alfalah credit-card holders.",
+   "early": "5% or Rs 1,000."
+  },
+  {
+   "annual_rate_pct": 29,
+   "as_of": "2026-10-06",
+   "category": "Card instalments",
+   "due_days": 360,
+   "id": "ubl-lite",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "United Bank Ltd (UBL)",
+   "max_amount": 500000,
+   "min_amount": 5000,
+   "model": "annual-reducing",
+   "name": "UBL Lite Instalment Plan",
+   "name_ur": "یو بی ایل لائٹ قسط منصوبہ",
+   "notes": "Processing fee per the UBL schedule.",
+   "rate_line": "29% a year, reducing balance (EMI). Tenure 3–36 months. Card late fee per the schedule of charges (not published here).",
+   "source": "Pakera credit-card instalment comparison (6 Oct 2026)",
+   "source_url": "https://pakera.pk/credit-card-instalment-plans-pakistan-compared/",
+   "term_months_default": 12,
+   "term_months_options": [
+    3,
+    6,
+    12,
+    18,
+    24,
+    36
+   ],
+   "verified": true,
+   "eligibility": "UBL credit-card holders.",
+   "early": "Not published."
+  },
+  {
+   "annual_rate_pct": 32,
+   "as_of": "2026-10-06",
+   "category": "Card instalments",
+   "due_days": 360,
+   "early_fee_note": "Early settlement: Rs 1,000 or 5%.",
+   "id": "js-instalment",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "JS Bank / Zindigi",
+   "max_amount": 500000,
+   "min_amount": 1000,
+   "model": "annual-reducing",
+   "name": "JS / Zindigi Card Instalment",
+   "name_ur": "جے ایس / زندگی کارڈ قسط",
+   "notes": "Processing fee Rs 1,000 or 1%.",
+   "rate_line": "32% / 34% / 36% a year, reducing balance (EMI). Tenure 12–36 months. Card late fee per the schedule of charges (not published here).",
+   "rate_options": [
+    {
+     "label": "32% a year",
+     "rate": 32
+    },
+    {
+     "label": "34% a year",
+     "rate": 34
+    },
+    {
+     "label": "36% a year",
+     "rate": 36
+    }
+   ],
+   "source": "Pakera credit-card instalment comparison (6 Oct 2026)",
+   "source_url": "https://pakera.pk/credit-card-instalment-plans-pakistan-compared/",
+   "term_months_default": 12,
+   "term_months_options": [
+    12,
+    24,
+    36
+   ],
+   "verified": true,
+   "eligibility": "JS Bank / Zindigi card holders.",
+   "early": "Rs 1,000 or 5%."
+  },
+  {
+   "annual_rate_pct": 0,
+   "as_of": "2026-10-14",
+   "category": "Government & welfare schemes",
+   "due_days": 1080,
+   "id": "pm-youth",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Government of Pakistan — via 15 banks incl. microfinance partners",
+   "max_amount": 7500000,
+   "min_amount": 10000,
+   "model": "annual-reducing",
+   "name": "PM Youth Business & Agriculture Loan",
+   "name_ur": "وزیر اعظم نوجوان کاروبار و زراعت قرض",
+   "notes": "Business and agriculture loans ONLY — not general personal cash. Tier 1: up to Rs 500,000 at 0% for 3 years. Tier 2: Rs 500,000–1,500,000 at 5% for 5 years. Tier 3: Rs 1,500,000–7,500,000 at 7% for up to 8 years. Late fee per the scheme.",
+   "rate_line": "0% / 5% / 7% a year by tier, reducing balance (EMI). Business / agriculture only.",
+   "rate_options": [
+    {
+     "label": "Tier 1 — up to Rs 500,000, 0%, 3 years",
+     "max_amount": 500000,
+     "months": 36,
+     "rate": 0
+    },
+    {
+     "label": "Tier 2 — Rs 500,000 to 1,500,000, 5%, 5 years",
+     "max_amount": 1500000,
+     "months": 60,
+     "rate": 5
+    },
+    {
+     "label": "Tier 3 — Rs 1,500,000 to 7,500,000, 7%, up to 8 years",
+     "max_amount": 7500000,
+     "months": 96,
+     "rate": 7
+    }
+   ],
+   "source": "PM Youth Business & Agriculture Loan Scheme portal (via educativz.com, 14 Oct 2026)",
+   "source_url": "https://pmybals.pmyp.gov.pk",
+   "term_months_default": 36,
+   "term_months_options": [
+    36,
+    60,
+    96
+   ],
+   "verified": false,
+   "eligibility": "Business / agriculture applicants, via 15 banks including microfinance partners.",
+   "early": "Per the scheme."
+  },
+  {
+   "annual_rate_pct": 0,
+   "as_of": "2026-10-01",
+   "category": "Government & welfare schemes",
+   "due_days": 720,
+   "id": "akhuwat",
+   "late_fee": {
+    "kind": "none"
+   },
+   "lender": "Akhuwat Islamic Microfinance",
+   "max_amount": 500000,
+   "min_amount": 10000,
+   "model": "annual-reducing",
+   "name": "Akhuwat Qarz-e-Hasna",
+   "name_ur": "اخوت قرض حسنہ",
+   "notes": "Qarz-e-Hasna — interest-free, no service charges. Indicative only (secondary blogs, Oct 2026) — verify at an Akhuwat branch. Not a bank; an SBP-regulated microfinance institution.",
+   "rate_line": "0% — interest-free, reducing balance (EMI). Tenure 1–3 years. No late fee stated.",
+   "source": "Secondary blogs (Oct 2026) — indicative only",
+   "source_url": "",
+   "term_months_default": 24,
+   "term_months_options": [
+    12,
+    24,
+    36
+   ],
+   "verified": false,
+   "eligibility": "Anyone eligible for Qarz-e-Hasna (Akhuwat members).",
+   "early": "No early-settlement fee stated."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Salary advance (EWA)",
+   "due_days": 30,
+   "fee_rs": 150,
+   "id": "abhi-ewa",
+   "late_fee": {
+    "kind": "none"
+   },
+   "lender": "Abhi (Pvt) Ltd",
+   "max_amount": 1000000,
+   "min_amount": 100,
+   "model": "flat-fee",
+   "name": "Abhi — Your Salary Now",
+   "name_ur": "ابھی — آپ کی تنخواہ ابھی",
+   "notes": "Earned-wage access, NOT a loan: a flat fee per drawdown, repaid automatically from your next salary — no interest and no late fee. The fee is reported as Rs 100 in older guides and Rs 150 in 2025–26 guides — unverified; the calculator uses Rs 150 (the higher figure). Only what you have already earned; your employer must be registered with Abhi. Abhi does not appear on the SECP whitelist of 11 Sep 2026.",
+   "rate_line": "Flat Rs 100–150 per drawdown (unverified), repaid next payday. No late fee.",
+   "source": "Abhi Play Store listing (Sep 2025) + secondary guides",
+   "source_url": "https://play.google.com/store/apps/details?id=com.abhifinance",
+   "verified": false,
+   "eligibility": "Your employer must be registered with Abhi. Only the wages you have already earned.",
+   "early": "Not applicable — repaid automatically from your next salary."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "ubl-cashplus",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "United Bank Ltd (UBL)",
+   "max_amount": 3000000,
+   "min_amount": 50000,
+   "model": "rate-on-request",
+   "name": "UBL CashPlus",
+   "name_ur": "یو بی ایل کیش پلس",
+   "notes": "Amount Rs 50,000–3,000,000, tenure 1–4 years. Salaried, employer payroll with UBL or any bank; net income at least Rs 40,000; age 21–60; auto-debit compulsory; complimentary insurance.",
+   "rate_line": "Rate on request — not published on UBL's page. Secondary figures conflict (21–28% a year / 1-year KIBOR + 22%). Ask for the Key Fact Statement.",
+   "source": "UBL CashPlus page (amount / tenure / eligibility)",
+   "source_url": "https://www.ubldigital.com/Loans/Consumer-Loans/UBL-Cash-Plus",
+   "verified": true,
+   "eligibility": "Salaried, employer payroll with UBL or any bank. Net income at least Rs 40,000. Age 21–60. Auto-debit compulsory.",
+   "early": "Per the Key Fact Statement."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "scb-personal",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Standard Chartered Bank (Pakistan)",
+   "max_amount": 4000000,
+   "min_amount": 30000,
+   "model": "rate-on-request",
+   "name": "Standard Chartered Personal Loan",
+   "name_ur": "اسٹینڈرڈ چارٹرڈ ذاتی قرض",
+   "notes": "Amount: the FAQ says Rs 30,000–2,000,000, the product page says up to Rs 4,000,000 — that conflicts too. Tenure 12–60 months. Processing fee: up to Rs 100,000: Rs 1,500; Rs 100,000–250,000: Rs 2,500; above Rs 250,000: 1%. Early settlement: 10% of the prepaid amount within 12 months, 5% after.",
+   "rate_line": "Rate on request — not published on SCB's pages. Secondary figures conflict (22–28% APR / 38% flat). Ask for the Key Fact Statement.",
+   "source": "Standard Chartered FAQs + product page",
+   "source_url": "https://www.sc.com/pk/borrow/personal/",
+   "verified": true,
+   "eligibility": "SCB account required. Salaried. No security or guarantor.",
+   "early": "10% of the prepaid amount within 12 months, 5% after."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "nbp-advance-salary",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "National Bank of Pakistan",
+   "max_amount": 2000000,
+   "min_amount": 50000,
+   "model": "rate-on-request",
+   "name": "NBP Advance Salary Loan",
+   "name_ur": "این بی پی ایڈوانس تنخواہ قرض",
+   "notes": "Up to Rs 2,000,000 (secondary: up to Rs 3,000,000 — conflict). Tenure 12–48 months. NBP account holders; federal / provincial government, semi-government and autonomous-body employees; minimum income Rs 70,000 (contractual FAQ); debt-burden ratio at most 35% (NBP's own rule — stricter than the SBP's 40%). Processing fee (contractual FAQ): Rs 2,000 or 2%, whichever is higher.",
+   "rate_line": "Rate on request — the figures conflict: 23.5% (permanent employees) vs 25.5% (contractual employees) vs KIBOR + 9–12% (aggregators). The calculator will not pick one.",
+   "source": "NBP Advance Salary FAQ (contractual employees)",
+   "source_url": "https://www.nbp.com.pk/advancesalary/files/ADVANCE%20SALARY%20FAQS%20For%20Contractual%20Employees.pdf",
+   "verified": true,
+   "eligibility": "NBP account holders. Federal / provincial government, semi-government and autonomous-body employees (contractual or permanent). Minimum income Rs 70,000 (contractual FAQ).",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "bop-advance-salary",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Bank of Punjab",
+   "max_amount": 2000000,
+   "min_amount": 50000,
+   "model": "rate-on-request",
+   "name": "Bank of Punjab Advance Salary",
+   "name_ur": "بینک آف پنجاب ایڈوانس تنخواہ",
+   "notes": "Rs 50,000–2,000,000, also capped at 25× net monthly salary. Tenure 1–4 years. BOP salary-account holders (government / semi-government employees).",
+   "rate_line": "Rate on request — 34.99% a year is quoted by secondary sites only; no official Bank of Punjab product page was found. Ask for the Key Fact Statement.",
+   "source": "Secondary: loancalculators.pk (Sep 2026)",
+   "source_url": "https://loancalculators.pk/",
+   "verified": false,
+   "eligibility": "BOP salary-account holders (government / semi-government employees).",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "faysal-islami",
+   "late_fee": {
+    "kind": "charity"
+   },
+   "lender": "Faysal Bank",
+   "max_amount": 1000000,
+   "min_amount": 10000,
+   "model": "rate-on-request",
+   "name": "Faysal Islami Personal Finance",
+   "name_ur": "فیصل اسلامی ذاتی مالیات",
+   "notes": "Islamic (Shariah-compliant). Processing fee: 50% waiver for 3–4 year tenure, 1 Apr–31 Dec 2026 (bank promo). Late payment goes to charity (principle).",
+   "rate_line": "Rate on request — the rate is not published on the bank's own channels. Ask for the Key Fact Statement.",
+   "source": "Faysal Bank promo (26 Jul 2026)",
+   "source_url": "",
+   "verified": false,
+   "eligibility": "Salaried / business.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "meezan-consumer-ease",
+   "late_fee": {
+    "kind": "none"
+   },
+   "lender": "Meezan Bank",
+   "max_amount": 1000000,
+   "min_amount": 35000,
+   "model": "rate-on-request",
+   "name": "Meezan Consumer Ease",
+   "name_ur": "میزان کنزیومر ایز",
+   "notes": "Musawamah for durables (including Apni Bike and Solar). Limit Rs 35,000–1,000,000, active 3 years with multiple drawdowns. Tenure 3 / 6 / 12 / 18 / 24 months per drawdown. Late payment charges: Nil. Early termination allowed.",
+   "rate_line": "Rate on request — profit rate not published on Meezan's pages (secondary claims conflict: 12.99% / 3–7%). Ask for the Key Fact Statement.",
+   "source": "Meezan Bank Women First / Consumer Ease pages",
+   "source_url": "https://www.meezanbank.com/meezan-women-first/",
+   "verified": true,
+   "eligibility": "Pakistani adult resident. Salaried 20–60 (min income Rs 25,000) / business 20–65 (Rs 40,000). Instalment at most 35% of net monthly income. Down payment up to 15% (bikes 15–50%).",
+   "early": "Early termination allowed (Apni Bike: no early-termination profit)."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "scb-saadiq",
+   "late_fee": {
+    "kind": "charity"
+   },
+   "lender": "Standard Chartered Saadiq",
+   "max_amount": 4000000,
+   "min_amount": 30000,
+   "model": "rate-on-request",
+   "name": "Standard Chartered Saadiq Personal Finance",
+   "name_ur": "اسٹینڈرڈ چارٹرڈ صادق ذاتی مالیات",
+   "notes": "Islamic personal finance. Rs 30,000–4,000,000, tenure 12–60 months. Late payment goes to charity (principle). Processing fee deducted from disbursement.",
+   "rate_line": "Rate on request — profit rate not published. Ask for the Key Fact Statement.",
+   "source": "Secondary: jobswebpk (30 Oct 2026)",
+   "source_url": "http://jobswebpk.blogspot.com/2026/10/personal-loan-pakistan.html",
+   "verified": false,
+   "eligibility": "Salaried.",
+   "early": "Check the contract (profit may be due in full)."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "palmpay",
+   "late_fee": {
+    "kind": "charity"
+   },
+   "lender": "PalmPay (Pvt) Ltd",
+   "max_amount": 500000,
+   "min_amount": 1000,
+   "model": "rate-on-request",
+   "name": "PalmPay",
+   "name_ur": "پام پے",
+   "notes": "Musawamah, 100% Shariah-compliant. Smartphone financing with ultra-low down payments. Late fees are donated to charity (no profit to PalmPay) — the amount is not published.",
+   "rate_line": "Rate on request — the profit is built into the fixed total price and is not published. Ask for the Key Fact Statement.",
+   "source": "PalmPay Islamic page",
+   "source_url": "https://www.palmpay.pk/pk/islamic",
+   "verified": true,
+   "eligibility": "Smartphone buyers.",
+   "early": "Not published."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "neem-paymenow",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Neem Exponential Financial Services (Pvt) Ltd",
+   "max_amount": 1000000,
+   "min_amount": 100,
+   "model": "rate-on-request",
+   "name": "NeemPaymenow (EWA)",
+   "name_ur": "نیم پے می ناؤ",
+   "notes": "Earned-wage access via your employer. SECP-whitelisted (EWA). No published fee schedule — ask your employer or the app for the Borrower Factsheet.",
+   "rate_line": "Rate on request — no published fee schedule. Ask for the Borrower Factsheet.",
+   "source": "SECP whitelist, 11 Sep 2026",
+   "source_url": "https://www.secp.gov.pk/document/digital-lending-apps-being-run-and-administered-by-duly-licensed-lending-nbfcs/?wpdmdl=46367&refresh=69a1ecdaa98af1772219610",
+   "verified": true,
+   "eligibility": "Via your employer.",
+   "early": "Not applicable — repaid from your next salary."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "nova-finance",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Viva Finance (Pvt) Ltd",
+   "max_amount": 1000000,
+   "min_amount": 100,
+   "model": "rate-on-request",
+   "name": "Nova Finance (EWA)",
+   "name_ur": "نووا فنانس",
+   "notes": "Earned-wage access via your employer. SECP-whitelisted (EWA). No published fee schedule — ask your employer or the app for the Borrower Factsheet.",
+   "rate_line": "Rate on request — no published fee schedule. Ask for the Borrower Factsheet.",
+   "source": "SECP whitelist, 11 Sep 2026",
+   "source_url": "https://www.secp.gov.pk/document/digital-lending-apps-being-run-and-administered-by-duly-licensed-lending-nbfcs/?wpdmdl=46367&refresh=69a1ecdaa98af1772219610",
+   "verified": true,
+   "eligibility": "Via your employer.",
+   "early": "Not applicable — repaid from your next salary."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "khushhali-personal",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Khushhali Microfinance Bank",
+   "max_amount": 500000,
+   "min_amount": 50000,
+   "model": "rate-on-request",
+   "name": "Khushhali Personal Loan",
+   "name_ur": "خوشحالی ذاتی قرض",
+   "notes": "Personal loan Rs 50,000–500,000, tenure 3–36 months (from the bank's own Facebook ad, 19 Dec 2025).",
+   "rate_line": "Rate on request — Khushhali does not publish its personal-loan rate on official channels. Secondary claims of 20–32% a year are unverified. Ask for the Key Fact Statement.",
+   "source": "Khushhali Microfinance Bank Facebook ad (19 Dec 2025)",
+   "source_url": "",
+   "verified": false,
+   "eligibility": "Rs 50,000–500,000.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "ubank-salary",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "U Microfinance Bank (U Bank)",
+   "max_amount": 350000,
+   "min_amount": 10000,
+   "model": "rate-on-request",
+   "name": "U Bank Salary Loan",
+   "name_ur": "یو بینک تنخواہ قرض",
+   "notes": "Salary loan up to Rs 350,000 (from the bank's Facebook ad, 8 Jan 2026).",
+   "rate_line": "Rate on request — U Bank does not publish its salary-loan rate. Social-media claims of 35–60% are unverified. Ask for the Key Fact Statement.",
+   "source": "U Microfinance Bank Facebook ad (8 Jan 2026)",
+   "source_url": "",
+   "verified": false,
+   "eligibility": "Salary-account holders.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "nrsp-personal",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "NRSP Microfinance Bank",
+   "max_amount": 500000,
+   "min_amount": 10000,
+   "model": "rate-on-request",
+   "name": "NRSP Personal Loan",
+   "name_ur": "این آر ایس پی ذاتی قرض",
+   "notes": "No current personal-loan pricing found on official channels.",
+   "rate_line": "Rate on request — no current personal-loan pricing found. Old aggregator range 14–18% a year (2025) is unverified. Ask for the Key Fact Statement.",
+   "source": "No official pricing found (research 2026-11-06)",
+   "source_url": "",
+   "verified": false,
+   "eligibility": "NRSP members.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "id": "finca-personal",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "FINCA Microfinance Bank",
+   "max_amount": 500000,
+   "min_amount": 10000,
+   "model": "rate-on-request",
+   "name": "FINCA Personal Loan",
+   "name_ur": "فنکا ذاتی قرض",
+   "notes": "Its products are Karobar / education / agriculture loans.",
+   "rate_line": "Rate on request — no current personal-loan pricing found. Old aggregator range 17–22% a year (2025) is unverified. Ask for the Key Fact Statement.",
+   "source": "No official pricing found (research 2026-11-06)",
+   "source_url": "",
+   "verified": false,
+   "eligibility": "FINCA customers.",
+   "early": "Per the schedule of charges."
+  },
+  {
+   "as_of": "",
+   "category": "Your own numbers",
+   "due_days": 30,
+   "id": "custom",
+   "late_fee": {
+    "kind": "none"
+   },
+   "lender": "Your own numbers",
+   "max_amount": 10000000,
+   "min_amount": 1,
+   "model": "custom",
+   "name": "Custom loan",
+   "name_ur": "اپنی مرضی کا قرض",
+   "notes": "Use this for any other app or lender. The numbers are whatever you type.",
+   "rate_line": "You set the rate, the fee type, the late fee and the cap.",
+   "source": "Your own numbers",
+   "source_url": "",
+   "verified": false,
+   "eligibility": "Anyone.",
+   "early": "Your own numbers."
+  },
+  {
+   "as_of": "2024-10-01",
+   "category": "Rate on request",
+   "due_days": 30,
+   "early": "Per the schedule of charges.",
+   "eligibility": "Salaried, approved companies, payroll with Soneri. Karachi, Lahore, Rawalpindi, Islamabad, Hyderabad only.",
+   "id": "soneri-personal",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Soneri Bank",
+   "max_amount": 1000000,
+   "min_amount": 10000,
+   "model": "rate-on-request",
+   "name": "Soneri Personal Finance",
+   "name_ur": "سونیری ذاتی مالیات",
+   "notes": "Up to Rs 1,000,000 (Rs 2,000,000 prime). Tenure 1–5 years as printed — that exceeds the SBP 4-year cap, so check the current terms. Salaried, approved companies, payroll with Soneri; Karachi, Lahore, Rawalpindi, Islamabad, Hyderabad only; minimum 1 year with the current employer.",
+   "rate_line": "Rate on request — 1-year KIBOR + 10% is quoted on a 2024 page (stale); verify the current rate. Ask for the Key Fact Statement.",
+   "source": "Secondary: sayjobcity (Oct 2024, stale)",
+   "source_url": "",
+   "verified": false
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "early": "Per the schedule of charges.",
+   "eligibility": "Major cities only.",
+   "id": "silkbank-personal",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Silkbank",
+   "max_amount": 2000000,
+   "min_amount": 10000,
+   "model": "rate-on-request",
+   "name": "Silkbank Personal Loan",
+   "name_ur": "سلک بینک ذاتی قرض",
+   "notes": "Up to Rs 2,000,000. Tenure 1–5 years as printed — that exceeds the SBP 4-year cap, so check the current terms. Major cities only (Karachi, Lahore, Rawalpindi, Islamabad, Hyderabad, Peshawar, Multan, Faisalabad).",
+   "rate_line": "Rate on request — the rate is not published or found. Ask for the Key Fact Statement.",
+   "source": "No current official page found (research 2026-11-06)",
+   "source_url": "",
+   "verified": false
+  },
+  {
+   "as_of": "2026-11-06",
+   "category": "Rate on request",
+   "due_days": 30,
+   "early": "Per the schedule of charges.",
+   "eligibility": "Not published.",
+   "id": "bank-al-habib-personal",
+   "late_fee": {
+    "kind": "unverified"
+   },
+   "lender": "Bank Al Habib",
+   "max_amount": 1000000,
+   "min_amount": 10000,
+   "model": "rate-on-request",
+   "name": "Bank Al Habib Personal Loan",
+   "name_ur": "بینک الحبیب ذاتی قرض",
+   "notes": "No current personal-loan product page or rate found on official channels.",
+   "rate_line": "Rate on request — no personal-loan product page or rate found. An aggregator quotes 25% a year (unverified). Ask for the Key Fact Statement.",
+   "source": "No official pricing found (research 2026-11-06)",
+   "source_url": "",
+   "verified": false
+  }
+ ]
+}
