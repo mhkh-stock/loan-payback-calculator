@@ -40,7 +40,13 @@
   // ---- policy text ----
   function howCharged(p) {
     if (p.model === 'weekly-compound') {
-      var r = (p.weekly_rates || []).map(function (w) { return w.rate_pct + '% (cycles ' + w.cycles + ')'; }).join(', ');
+      var rates = p.weekly_rates || [];
+      var parts = rates.map(function (w, i) {
+        var from = i === 0 ? 1 : (rates[i - 1].upto + 1);
+        var range = w.upto ? (from + '–' + w.upto) : (from + '+');
+        return w.rate + '% (cycles ' + range + ')';
+      });
+      var r = parts.join(', ');
       return r ? (r + ' a week on the outstanding loan, compounded every 7 days.') : 'A % a week on the outstanding loan, compounded every 7 days.';
     }
     if (p.model === 'weekly-simple') return '5% a week on the loan, simple (not compounded).';
@@ -66,6 +72,7 @@
     if (lf.kind === 'weekly-pct') return lf.pct + '% of the loan per week late' + (lf.grace_days ? ', after ' + lf.grace_days + ' grace day(s)' : '') + '.';
     if (lf.kind === 'per-instalment-pct') return lf.pct + '% of each overdue instalment' + (lf.cap_rs ? ', capped at Rs ' + lf.cap_rs.toLocaleString('en-PK') + ' per instalment' : '') + '.';
     if (lf.kind === 'flat-rs') return 'Rs ' + (lf.flat_rs || 0).toLocaleString('en-PK') + ' flat' + (lf.grace_days ? ', after ' + lf.grace_days + ' grace day(s)' : '') + '.';
+    if (lf.kind === 'flat-rs-per-instalment') return 'Rs ' + (lf.flat_rs || 0).toLocaleString('en-PK') + ' + FED per late payment' + (lf.grace_days ? ', after ' + lf.grace_days + ' grace day(s)' : '') + ' — FED is not included in the total here.';
     return '—';
   }
   function badgeHtml(p) {
@@ -287,6 +294,10 @@
     $('rAnnual').textContent = r.annualised_pct != null ? ('~' + r.annualised_pct + '% a year (simple annualisation)') : '—';
     $('rCapWarn').hidden = !r.cap_hit;
     if (r.cap_hit) $('rCapWarn').textContent = '⚠ ' + r.cap_note;
+    // Amount outside the preset's published range: warn, don't block.
+    var rw = $('rangeWarn');
+    var rangeWarn = LoanCalc.amountRangeWarning ? LoanCalc.amountRangeWarning(p, input, input.principal) : '';
+    if (rw) { rw.hidden = !rangeWarn; if (rangeWarn) rw.textContent = '⚠ ' + rangeWarn; }
     $('rVerdict').textContent = r.verdict;
     $('rPlanDate').textContent = r.repay_date;
     function lateCard(prefix, card) {
@@ -471,11 +482,11 @@
           lender: nanoApp.nbfc + ' (licensed NBFC)',
           model: 'custom', verified: true,
           rate_line: 'Rate shown only in the app (Borrower Factsheet) — no public rate.',
-          eligibility: 'Licensed nano app (SECP whitelist, 11 Sep 2026). Terms shown in-app only.',
+          eligibility: 'Licensed nano app (SECP whitelist, 29 Sep 2026). Terms shown in-app only.',
           early: 'Per the app\'s Borrower Factsheet.',
-          source: 'SECP whitelist of licensed digital lending apps (11 Sep 2026)',
+          source: 'SECP whitelist of licensed digital lending apps (29 Sep 2026)',
           source_url: '',
-          as_of: '11 Sep 2026',
+          as_of: '29 Sep 2026',
           min_amount: 1, max_amount: 25000,
           late_fee: { kind: 'unverified' },
         };

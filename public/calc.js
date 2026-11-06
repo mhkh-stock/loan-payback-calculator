@@ -407,6 +407,7 @@ function owedOnDay(preset, input, d) {
       if (lf.kind === 'one-off-pct') late = (P * (lf.pct || 0)) / 100;
       else if (lf.kind === 'weekly-pct') late = (P * (lf.pct || 0) / 100) * (pastDue / 7);
       else if (lf.kind === 'flat-rs') late = lf.flat_rs || 0;
+      else if (lf.kind === 'flat-rs-per-instalment') late = lf.flat_rs || 0;
     }
     if (preset.fee_kind === 'annual-emi') {
       // total / owed were already set by the EMI maths above; the late fee
@@ -458,13 +459,32 @@ function dueInfo(preset, input) {
   return { due_days: preset.due_days || 30, instalments: 1, fee_pct: null };
 }
 
+// Warn when the amount is outside the preset's published range — or the
+// selected rate option's own max (e.g. PM Youth tiers, each with its own
+// ceiling). Returns a plain sentence, or '' when the amount is in range.
+// Never blocks: the user may still want an estimate outside the range.
+function amountRangeWarning(preset, input, principal) {
+  if (!preset) return '';
+  var min = preset.min_amount;
+  var max = preset.max_amount;
+  if (input && input.rate_option != null && Array.isArray(preset.rate_options) && preset.rate_options[input.rate_option]) {
+    var ro = preset.rate_options[input.rate_option];
+    if (ro.max_amount) max = ro.max_amount;
+  }
+  if (min && principal < min) return 'This loan starts at Rs ' + Number(min).toLocaleString('en-PK') + ' — the amount you typed is below the minimum.';
+  if (max && principal > max) return 'This loan goes up to Rs ' + Number(max).toLocaleString('en-PK') + ' — the amount you typed is above the maximum.';
+  return '';
+}
+
 // Full calculation for a planned repayment date.
 function compute(presetIn, input) {
   // "Rate on request" loans: the lender publishes no rate, so the user types
   // the rate from their Key Fact Statement — the calculation then runs on the
   // Custom maths (input.kfs). Without those numbers the loan is not calculable.
   if (presetIn.model === 'rate-on-request') {
-    if (!input.kfs) {
+    // A zero rate means "not entered yet" — without it the maths would
+    // silently show the loan as free (total = amount, 0% cost).
+    if (!input.kfs || !(Number(input.kfs.rate_pct) || 0)) {
       return {
         error: 'No published rate for this lender — ask for the Key Fact Statement and use Custom loan with the rate they quote.',
         not_calculable: true, preset_id: presetIn.id,
@@ -668,6 +688,9 @@ function notesFor(preset, due, input) {
   if (preset.late_fee && preset.late_fee.kind === 'unverified') {
     notes.push('The late fee is set in the lender\'s schedule of charges and is not published on the product page, so it is not included here.');
   }
+  if (preset.late_fee && preset.late_fee.kind === 'flat-rs-per-instalment') {
+    notes.push('The late fee is Rs ' + (preset.late_fee.flat_rs || 0).toLocaleString('en-PK') + ' + FED per late payment — FED (federal excise duty) is charged on top and is not included in the total here.');
+  }
   if (preset.id === 'pm-youth') {
     notes.push('Business and agriculture loans only — not general personal cash.');
   }
@@ -727,6 +750,6 @@ function manualInput(form) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { roundRs, parseDate, fmtDate, daysBetween, addDays, tierRate, rateOption, spreadFor, effectiveAnnualRate, termMonths, emiMonthly, emiBalance, priceMarkupParts, markupPartsFor, nanoCheck, resolvePreset, owedOnDay, dueInfo, compute, manualInput };
+  module.exports = { roundRs, parseDate, fmtDate, daysBetween, addDays, tierRate, rateOption, spreadFor, effectiveAnnualRate, termMonths, emiMonthly, emiBalance, priceMarkupParts, markupPartsFor, nanoCheck, resolvePreset, owedOnDay, dueInfo, amountRangeWarning, compute, manualInput };
 }
-if (typeof window !== 'undefined') window.LoanCalc = { roundRs, parseDate, fmtDate, daysBetween, addDays, tierRate, rateOption, spreadFor, effectiveAnnualRate, termMonths, emiMonthly, emiBalance, priceMarkupParts, markupPartsFor, nanoCheck, resolvePreset, owedOnDay, dueInfo, compute, manualInput };
+if (typeof window !== 'undefined') window.LoanCalc = { roundRs, parseDate, fmtDate, daysBetween, addDays, tierRate, rateOption, spreadFor, effectiveAnnualRate, termMonths, emiMonthly, emiBalance, priceMarkupParts, markupPartsFor, nanoCheck, resolvePreset, owedOnDay, dueInfo, amountRangeWarning, compute, manualInput };
