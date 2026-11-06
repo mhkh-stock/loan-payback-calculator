@@ -5,8 +5,18 @@ amount and the dates, and see the total payback, the increase, and the late
 fee as days pass — with the formula on screen.
 
 ## Live
-Not deployed yet (hosting slots are full — 4/4 containers in use). Local:
-`node server.js`, then http://127.0.0.1:3035. No install step, no dependencies.
+Deploy-ready (final review 6 Nov 2026 — see DEPLOY.md). Not hosted yet
+(hosting slots are full — 4/4 containers in use). Local run:
+
+```sh
+node server.js
+```
+
+No install step, no dependencies (Node 24+ only). Then open
+http://127.0.0.1:3035. The server binds 0.0.0.0, so it also answers on the
+machine's network address. `PORT` env var overrides the port (default
+3035); `DB_FILE` overrides the SQLite path (default `data/loan.sqlite`,
+created on first run and seeded from `presets.json` — never commit it).
 
 ## The idea
 No calculator like this exists: generic loan calculators have no Pakistani
@@ -116,17 +126,21 @@ schemes, salary advance, and the 17 SECP-licensed nano apps.
   loan book at ~139% in 2025 — that figure itself is unverified in the app).
   The calculator shows the true cost plainly.
 - It is an ESTIMATE from the published rates, not the lender's final word.
-- 17 presets are "rate on request" — the lender publishes no rate, so the
+- 19 presets are "rate on request" — the lender publishes no rate, so the
   calculator never invents one; the user enters the rate from their Key Fact
-  Statement. JazzCash BNPL and the Abhi fee were not independently
-  re-verified against a live source — the app says so on screen.
+  Statement. JazzCash BNPL is verified (JazzCash Yeylo page + merchant
+  terms, Nov 2026). The Abhi fee (Rs 100 vs 150) is still unresolved — the
+  calculator uses Rs 150 (the higher figure) and says so on screen.
+- The SECP whitelist edition used is 29 Sep 2026 (compared with the 11 Sep
+  edition on 6 Nov 2026: the 17 nano apps are identical; the only addition
+  is Bunyaad Finance — Credsys, B2B financing, not a consumer loan).
 - Whether the SECP nano guardrails survived the Nov 2025 amendments
   (SRO 2120(I)/2025) is unconfirmed — the app says so next to the guardrails.
 
 ## Files
 - `server.js` — native http + sqlite, port 3035 (`/health`, `/api/presets`,
   static pages; the DB file is never served).
-- `presets.json` — the 48 presets + 17 nano apps + benchmarks + guardrails,
+- `presets.json` — the 51 presets + 17 nano apps + benchmarks + guardrails,
   single source of truth.
 - `public/calc.js` — shared calculator maths (browser + tests).
 - `public/index.html` — home: manual calculator + loan picker.
@@ -134,7 +148,11 @@ schemes, salary advance, and the 17 SECP-licensed nano apps.
 - `public/how.html`, `public/sources.html` — the pages.
 - `public/picker.js`, `public/manual.js`, `public/calcpage.js` — browser wiring.
 - `public/nav.js`, `public/styles.css` — kebab menu + glass theme.
-- `test.js` — 106 checks, `node test.js` → ALL TESTS PASSED.
+- `test.js` — 133 checks, `node test.js` → ALL TESTS PASSED.
+- `e2e.js` — headless click-through (jsdom, 35 checks): picker, filters,
+  per-loan calculators, manual calculator, nano + rate-on-request flows.
+  Needs jsdom installed once in a scratch dir (see the header); the app
+  itself stays zero-dependency.
 
 ## Research
 `~/workspace/new-projects/p6-loan-calculator-research.md` — the verified rate

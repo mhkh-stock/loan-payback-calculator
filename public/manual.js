@@ -84,10 +84,13 @@
     var input = LoanCalc.manualInput(form);
     var r = LoanCalc.compute({ id: 'custom' }, input);
     var res = $('mResults');
+    var err = $('mError');
     if (r.error) {
       res.classList.remove('show');
+      if (err) { err.textContent = r.error; err.hidden = false; }
       return;
     }
+    if (err) err.hidden = true;
     res.classList.add('show');
     $('mrDate').textContent = r.repay_date;
     $('mrTotal').textContent = fmt(r.total);
