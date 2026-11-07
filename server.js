@@ -8,11 +8,33 @@
 'use strict';
 const http = require('node:http');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { DatabaseSync } = require('node:sqlite');
 
 const PORT = Number(process.env.PORT || 3035);
-const DB_FILE = process.env.DB_FILE || path.join(__dirname, 'data', 'loan.sqlite');
+// Deploy-only writable-location fallback (FoodScope pattern, no behaviour
+// change on a normal PC): on a local run __dirname is writable, so the
+// default data/loan.sqlite below is used exactly as before. Only when the
+// app directory cannot be written (e.g. SnapDeploy's read-only /app) does
+// the database move to a writable temp directory. The DB is only a presets
+// cache re-seeded from presets.json on every start, so a fresh temp copy
+// is harmless. An explicit DB_FILE always wins over both locations.
+function writableBase(appDir) {
+  try { fs.accessSync(appDir, fs.constants.W_OK); return appDir; }
+  catch { return path.join(os.tmpdir(), 'loan-payback-calculator'); }
+}
+function resolveDbFile(appDir, envDbFile) {
+  if (envDbFile) return envDbFile;
+  const base = writableBase(appDir);
+  return base === appDir
+    ? path.join(appDir, 'data', 'loan.sqlite')
+    : path.join(base, 'loan.sqlite');
+}
+const DB_FILE = resolveDbFile(__dirname, process.env.DB_FILE);
+if (!process.env.DB_FILE && DB_FILE !== path.join(__dirname, 'data', 'loan.sqlite')) {
+  console.log('Loan DB directory (read-only app dir fallback):', path.dirname(DB_FILE));
+}
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
 fs.mkdirSync(path.dirname(DB_FILE), { recursive: true });
@@ -92,6 +114,10 @@ function handle(req, res) {
   return send(res, 404, 'text/plain; charset=utf-8', 'Not found');
 }
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log('Loan Payback Calculator listening on :' + PORT);
-});
+if (require.main === module) {
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log('Loan Payback Calculator listening on :' + PORT);
+  });
+}
+
+module.exports = { resolveDbFile, writableBase };

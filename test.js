@@ -5,8 +5,10 @@
 'use strict';
 const { spawn } = require('node:child_process');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const M = require('./public/calc.js');
+const serverMod = require('./server.js');
 const PRESETS = JSON.parse(fs.readFileSync(path.join(__dirname, 'presets.json'), 'utf8')).presets;
 const byId = {};
 for (const p of PRESETS) byId[p.id] = p;
@@ -428,6 +430,22 @@ async function main() {
     try { fs.unlinkSync(DB + '-wal'); } catch {}
     try { fs.unlinkSync(DB + '-shm'); } catch {}
   }
+
+  // ---- 22. Read-only app dir: DB falls back to /tmp (FoodScope pattern) ----
+  // The DB is only a presets cache re-seeded from presets.json on every
+  // start, so a fresh temp copy is harmless. A missing app dir stands in
+  // for a read-only one (the suite runs as root, which bypasses chmod).
+  const tmpBase = fs.mkdtempSync(path.join(os.tmpdir(), 'loan-test-'));
+  check('DB fallback: writable app dir -> data/loan.sqlite under it',
+    serverMod.resolveDbFile(tmpBase, undefined) === path.join(tmpBase, 'data', 'loan.sqlite'),
+    serverMod.resolveDbFile(tmpBase, undefined));
+  check('DB fallback: unwritable app dir -> /tmp/loan-payback-calculator/loan.sqlite',
+    serverMod.resolveDbFile(path.join(tmpBase, 'does-not-exist'), undefined) === path.join(os.tmpdir(), 'loan-payback-calculator', 'loan.sqlite'),
+    serverMod.resolveDbFile(path.join(tmpBase, 'does-not-exist'), undefined));
+  check('DB fallback: DB_FILE env still wins over both',
+    serverMod.resolveDbFile(path.join(tmpBase, 'does-not-exist'), '/custom/x.sqlite') === '/custom/x.sqlite',
+    serverMod.resolveDbFile(path.join(tmpBase, 'does-not-exist'), '/custom/x.sqlite'));
+  fs.rmSync(tmpBase, { recursive: true, force: true });
 
   console.log('\n' + passed + ' passed, ' + failed + ' failed');
   if (failed > 0) { console.log('TESTS FAILED'); process.exit(1); }

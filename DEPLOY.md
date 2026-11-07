@@ -21,7 +21,10 @@ panel, and no third-party requests.
 5. Port: **3035** (the server binds `0.0.0.0` and reads `PORT` from the
    environment if the platform sets one).
 6. No environment variables are required. Optional: `DB_FILE` to move the
-   SQLite file (default `data/loan.sqlite`, created on first run).
+   SQLite file (default `data/loan.sqlite`, created on first run). If the
+   app directory is read-only, the database automatically falls back to
+   `/tmp/loan-payback-calculator/loan.sqlite` (re-seeded from
+   `presets.json` on every start, so nothing is lost).
 7. Deploy. SnapDeploy auto-deploys on every GitHub push after the first one.
 
 ## After deploy — check it works
