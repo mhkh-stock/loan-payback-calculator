@@ -5,7 +5,7 @@ amount and the dates, and see the total payback, the increase, and the late
 fee as days pass — with the formula on screen.
 
 ## Live
-Deploy-ready (final review 6 Nov 2026 — see DEPLOY.md). Not hosted yet
+Deploy-ready (final review 6 Nov 2026, re-reviewed 7 Nov 2026 — see DEPLOY.md). Not hosted yet
 (hosting slots are full — 4/4 containers in use). Local run:
 
 ```sh
@@ -48,7 +48,10 @@ schemes, salary advance, and the 17 SECP-licensed nano apps.
   "KIBOR changes daily — check today's rate"), then results: total to pay
   back, extra money, effective cost %, annualised cost, week-by-week /
   month-by-month timeline, "1 day late / 7 days late / 30 days late" cards,
-  cap warning, plain-language verdict line, and the formula on screen.
+  cap warning, plain-language verdict line, and the formula on screen. For
+  instalment plans (Daraz PayLater, JazzCash BNPL) the results also say what
+  paying each instalment on time costs — the headline total assumes you pay
+  everything on the final day, so instalments due earlier count as overdue.
 - **Nano apps** (`/calculator.html?nano=<app>`): the calculator says plainly
   that the rate is only shown inside the app in its Borrower Factsheet and
   asks the user to enter the rate + how often it is charged + the late fee +
@@ -148,8 +151,8 @@ schemes, salary advance, and the 17 SECP-licensed nano apps.
 - `public/how.html`, `public/sources.html` — the pages.
 - `public/picker.js`, `public/manual.js`, `public/calcpage.js` — browser wiring.
 - `public/nav.js`, `public/styles.css` — kebab menu + glass theme.
-- `test.js` — 133 checks, `node test.js` → ALL TESTS PASSED.
-- `e2e.js` — headless click-through (jsdom, 35 checks): picker, filters,
+- `test.js` — 143 checks, `node test.js` → ALL TESTS PASSED.
+- `e2e.js` — headless click-through (jsdom, 39 checks): picker, filters,
   per-loan calculators, manual calculator, nano + rate-on-request flows.
   Needs jsdom installed once in a scratch dir (see the header); the app
   itself stays zero-dependency.

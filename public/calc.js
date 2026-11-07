@@ -151,7 +151,10 @@ function nanoCheck(o) {
 function resolvePreset(preset, input) {
   if (preset.id !== 'custom') return preset;
   const c = input.custom || {};
-  const rate = Number(c.rate_pct) || 0;
+  // Clamp user-typed numbers: a negative rate, fee or cap would make the
+  // loan look cheaper than the amount borrowed (or pay the borrower).
+  const nonNeg = (v) => Math.max(0, Number(v) || 0);
+  const rate = nonNeg(c.rate_pct);
   const termDays = Math.max(1, Math.floor(Number(c.term_days) || 30));
   const termMonths = Math.max(1, Math.floor(Number(c.term_months) || 12));
   const feeKind = c.fee_kind || 'flat-term';
@@ -161,20 +164,20 @@ function resolvePreset(preset, input) {
     fee_kind: feeKind, rate_pct: rate, term_days: termDays,
     term_months: termMonths,
     instalments: Math.max(1, Math.floor(Number(c.instalments) || 1)),
-    down_pct: Number(c.down_pct) || 0,
-    fee_rs: Number(c.fee_rs) || 0,
+    down_pct: Math.min(100, nonNeg(c.down_pct)),
+    fee_rs: nonNeg(c.fee_rs),
     due_days: feeKind === 'annual-emi' || feeKind === 'price-markup' ? termMonths * 30 : termDays,
     late_fee: {
       kind: c.late_kind || 'none',
-      pct: Number(c.late_pct) || 0,
-      flat_rs: Number(c.late_flat_rs) || 0,
-      cap_rs: Number(c.late_cap_rs) || 0,
+      pct: nonNeg(c.late_pct),
+      flat_rs: nonNeg(c.late_flat_rs),
+      cap_rs: nonNeg(c.late_cap_rs),
       grace_days: Math.max(0, Math.floor(Number(c.grace_days) || 0)),
     },
     cap: {
       kind: c.cap_kind || 'none',
-      pct: Number(c.cap_pct) || 0,
-      rs: Number(c.cap_rs) || 0,
+      pct: nonNeg(c.cap_pct),
+      rs: nonNeg(c.cap_rs),
     },
     source: 'Your own numbers', source_url: '', as_of: '', verified: false,
     notes: 'Custom loan — the numbers are whatever you typed.',
@@ -393,7 +396,8 @@ function owedOnDay(preset, input, d) {
     if (lf.kind === 'per-instalment-pct') {
       // Late fee per OVERDUE instalment — instalments fall due during the
       // term (every 30 days), so this is checked even before the term ends.
-      const n = preset.instalments || 1;
+      // For an EMI loan the instalment count is the term in months.
+      const n = preset.fee_kind === 'annual-emi' ? (preset.term_months || 12) : (preset.instalments || 1);
       let inst;
       if (preset.fee_kind === 'annual-emi') inst = emiMonthly(P, preset.rate_pct, preset.term_months || 12);
       else if (preset.fee_kind === 'price-markup') inst = markupPartsFor(preset, input, P).inst;
@@ -626,12 +630,25 @@ function compute(presetIn, input) {
     markup, late_fee: lateFee, total, cost, cost_pct: costPct,
     annualised_pct: annualised, cap_hit: capHit, cap_note: capNote,
     guardrails,
-    timeline, late, verdict, notes: notesFor(preset, due, input),
+    timeline, late, verdict, notes: notesFor(preset, due, input, lateFee),
   };
 }
 
-function notesFor(preset, due, input) {
+function notesFor(preset, due, input, lateFee) {
   const notes = [];
+  // Instalment plans (Daraz, JazzCash BNPL, manual flat-term with a
+  // per-instalment late fee): the result assumes the borrower pays
+  // everything on the final day, so instalments due earlier already count
+  // as overdue. Say plainly what paying on time would cost instead.
+  const isFlatInstalments = (preset.model === 'flat-term' ||
+    (preset.model === 'custom' && preset.fee_kind === 'flat-term')) &&
+    (due.instalments || 1) > 1;
+  if (isFlatInstalments && (lateFee || 0) > 0) {
+    const feePct = preset.model === 'flat-term' ? (due.fee_pct || 0) : (preset.rate_pct || 0);
+    const onTime = Math.round(input.principal + (input.principal * feePct) / 100);
+    notes.push('Pay each instalment on time and you pay Rs ' + onTime.toLocaleString('en-PK') +
+      ' in total — no late fee. This result assumes you pay everything on the final day, so instalments due earlier count as overdue.');
+  }
   if (preset.id === 'easycash-app') {
     notes.push('No late fee on the app route — the weekly charge itself is the cost of keeping the loan longer. Markup stops at the 40% cap (8 weeks).');
     notes.push('Markup is charged per day of use; repaying early means markup already taken for unused days is charged as an early-repayment fee.');

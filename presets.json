@@ -387,7 +387,7 @@
    "source_url": "https://www.jazzcash.com.pk/move-money/cards",
    "term_options": [
     {
-     "days": 90,
+     "days": 60,
      "fee_pct": 15,
      "instalments": 3,
      "label": "3 instalments"

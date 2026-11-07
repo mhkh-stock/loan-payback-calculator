@@ -125,6 +125,17 @@ async function main() {
     await new Promise((r) => setTimeout(r, 300));
     check('Manual: 10,000 at 5%/wk simple x 2 weeks -> Rs 11,000', (hd.getElementById('mrTotal') || {}).textContent === 'Rs 11,000', (hd.getElementById('mrTotal') || {}).textContent);
     check('Manual: no undefined/NaN in results', !/undefined|NaN/.test((hd.getElementById('mResults') || { textContent: '' }).textContent), null);
+    // Early-repayment note with markup must render as text, not as HTML.
+    const noteEl = hd.getElementById('mEarlyNote');
+    if (noteEl) {
+      noteEl.value = '<img src=x onerror="window.__xss=1">'; fire(noteEl, 'input');
+      await new Promise((r) => setTimeout(r, 300));
+      const notesBox = hd.getElementById('mrNotes');
+      check('Manual: early note with HTML renders as text, not an element', notesBox && !notesBox.querySelector('img') && notesBox.textContent.includes('<img src=x'), notesBox && notesBox.textContent.slice(0, 200));
+      check('Manual: note markup did not execute', !hd.defaultView.__xss, null);
+      noteEl.value = ''; fire(noteEl, 'input');
+      await new Promise((r) => setTimeout(r, 200));
+    } else { check('Manual: early note field exists', false, null); }
     // Manual error: clear the amount -> visible error message, no results.
     setVal('mAmount', '');
     await new Promise((r) => setTimeout(r, 300));
@@ -164,6 +175,8 @@ async function main() {
     // ---- 4. ReadyCash Rs 20,000 x 28d = Rs 24,000 ----
     const rc = await loadPage('/calculator.html?preset=jazzcash-readycash');
     const rd = rc.window.document;
+    const rcPolicy = (rd.getElementById('policyRows') || { textContent: '' }).textContent;
+    check('ReadyCash policy: charged line reads "5% a week on the loan, simple"', /5% a week on the loan, simple \(not compounded\)/.test(rcPolicy), rcPolicy.slice(0, 200));
     const setRc = (id, v) => { const el = rd.getElementById(id); if (!el) return false; el.value = v; fire(el, 'input'); fire(el, 'change'); return true; };
     setRc('amount', '20000');
     setRc('borrowDate', '2026-11-06'); setRc('repayDate', '2026-12-04');
@@ -202,6 +215,17 @@ async function main() {
     await new Promise((r) => setTimeout(r, 400));
     const rorTotal = (rord.getElementById('rTotal') || {}).textContent;
     check('ROR: after typing 25% from the KFS it computes', /^Rs /.test(rorTotal || '') && !/undefined|NaN/.test(rorTotal || ''), rorTotal);
+    // KFS per-instalment late fee shows the instalments field (for a
+    // flat-term KFS loan — for EMI the instalments are the term in months).
+    const kfsLateKind = rord.getElementById('kfsLateKind');
+    const kfsFeeKind = rord.getElementById('kfsFeeKind');
+    if (kfsLateKind && kfsFeeKind) {
+      kfsFeeKind.value = 'flat-term'; fire(kfsFeeKind, 'change');
+      kfsLateKind.value = 'per-instalment-pct'; fire(kfsLateKind, 'change');
+      await new Promise((r) => setTimeout(r, 300));
+      const kfsInstWrap = rord.getElementById('kfsInstWrap');
+      check('ROR: per-instalment late fee shows the instalments field', kfsInstWrap && !kfsInstWrap.hidden, kfsInstWrap && kfsInstWrap.hidden);
+    } else { check('ROR: KFS late fee selector exists', false, null); }
     ror.window.close();
 
     // ---- 8. Nano flow: Paisayaar, breach warning shows ----

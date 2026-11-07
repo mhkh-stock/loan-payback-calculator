@@ -59,6 +59,15 @@ function serveFile(res, file) {
 }
 
 const server = http.createServer((req, res) => {
+  try {
+    handle(req, res);
+  } catch (e) {
+    // Never let one bad request kill the process: answer 500 and stay up.
+    try { send(res, 500, 'text/plain; charset=utf-8', 'Server error'); } catch {}
+  }
+});
+
+function handle(req, res) {
   const url = new URL(req.url, 'http://127.0.0.1');
   const p = url.pathname;
   if (req.method === 'GET' && p === '/health') {
@@ -81,7 +90,7 @@ const server = http.createServer((req, res) => {
     return serveFile(res, p.slice(1));
   }
   return send(res, 404, 'text/plain; charset=utf-8', 'Not found');
-});
+}
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log('Loan Payback Calculator listening on :' + PORT);

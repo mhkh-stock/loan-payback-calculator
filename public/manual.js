@@ -8,6 +8,15 @@
   var $ = function (id) { return document.getElementById(id); };
   var fmt = function (n) { return 'Rs ' + Number(n).toLocaleString('en-PK'); };
 
+  // User-typed text (the early-repayment note) is rendered as text, never
+  // as HTML — otherwise a note containing markup would execute in the
+  // visitor's own browser.
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
   function todayISO() {
     var d = new Date();
     return d.toISOString().slice(0, 10);
@@ -126,7 +135,7 @@
     var notes = r.notes.slice();
     if (input.early_note) notes.push('Your early-repayment note: ' + input.early_note + '.');
     $('mrNotes').innerHTML = notes.map(function (n) {
-      return '<p class="note">• ' + n + '</p>';
+      return '<p class="note">• ' + esc(n) + '</p>';
     }).join('');
   }
 

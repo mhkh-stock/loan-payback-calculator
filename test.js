@@ -224,7 +224,7 @@ async function main() {
   const nanoCost = M.nanoCheck({ amount: 10000, totalBorrowed: 10000, days: 30, totalCost: 12000, apr: 50 });
   check('Nano guardrails: total cost over the loan is a violation', nanoCost.ok === false && nanoCost.violations.some((v) => v.includes('more than the loan')), nanoCost);
 
-  // ---- 18. Manual loan calculator (home page) — one hand-computed case per charging mode ----
+  // ---- 17. Manual loan calculator (home page) — one hand-computed case per charging mode ----
   function man(f) { return M.compute({ id: 'custom' }, M.manualInput({ borrow_date: B, ...f })); }
   const m1 = man({ amount: 10000, rate: 5, mode: 'weekly-simple', tenure_value: 2, tenure_unit: 'weeks' });
   check('Manual: weekly simple 10,000 at 5%/wk x 2 weeks -> 11,000', m1.total === 11000 && m1.markup === 1000, m1);
@@ -249,7 +249,7 @@ async function main() {
   const m11 = man({ amount: 50000, rate: 25, mode: 'annual-emi', tenure_value: 12, tenure_unit: 'months', late_kind: 'one-off-pct', late_value: 5, grace_days: 0 });
   check('Manual: EMI loan computes with a late fee set', m11.total > 50000 && m11.instalment != null, m11);
 
-  // ---- 19. Glass design contrast (WCAG AA, 4.5:1 for normal text) ----
+  // ---- 18. Glass design contrast (WCAG AA, 4.5:1 for normal text) ----
   // Glass surfaces are translucent, so the effective background is the rgba
   // blended over what sits beneath it (page #0b1220, or the card glass).
   function hexRgb(hex) { const n = parseInt(hex.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
@@ -295,7 +295,7 @@ async function main() {
   check('Glass CSS: primary button is solid blue #2563eb', /--primary: #2563eb/.test(css) && /background: var\(--primary\)/.test(css), null);
   check('Glass CSS: no teal/gold theme left', !/#0c3b3c/.test(css) && !/#d9a441/.test(css) && !/--teal/.test(css) && !/--gold/.test(css), null);
 
-  // ---- 21. Final review fixes (6 Nov 2026) ----
+  // ---- 19. Final review fixes (6 Nov 2026) ----
   // HBL flat Rs 1,500 + FED late fee: charged once past the term, and the
   // notes say the FED is extra (not in the total).
   const hblLateFee = M.compute(byId['hbl-personal'], { principal: 100000, cycles: 1, borrow_date: '2026-01-01', repay_date: '2029-01-01', term_months: 36 });
@@ -340,7 +340,40 @@ async function main() {
   check('DEPLOY.md exists with SnapDeploy steps', fs.existsSync(path.join(__dirname, 'DEPLOY.md')) && /SnapDeploy/.test(fs.readFileSync(path.join(__dirname, 'DEPLOY.md'), 'utf8')) && /node server\.js/.test(fs.readFileSync(path.join(__dirname, 'DEPLOY.md'), 'utf8')) && /3035/.test(fs.readFileSync(path.join(__dirname, 'DEPLOY.md'), 'utf8')), null);
   check('README: deploy-ready + PORT env documented', /Deploy-ready/.test(fs.readFileSync(path.join(__dirname, 'README.md'), 'utf8')) && /PORT/.test(fs.readFileSync(path.join(__dirname, 'README.md'), 'utf8')), null);
 
-  // ---- 20. Server smoke (fresh DB) ----
+  // ---- 20. Review fixes (7 Nov 2026) ----
+  // JazzCash BNPL: instalments fall at purchase / +30 / +60 days, so the
+  // loan is due at 60 days, not 90 (Yeylo page + merchant terms).
+  check('JazzCash BNPL: due 60 days (last instalment +60), not 90', M.dueInfo(byId['jazzcash-bnpl'], { principal: 10000, term_option: 0 }).due_days === 60, M.dueInfo(byId['jazzcash-bnpl'], { principal: 10000, term_option: 0 }));
+  const jbnDue = M.compute(byId['jazzcash-bnpl'], { principal: 10000, cycles: 1, borrow_date: B, repay_date: D(60) });
+  check('JazzCash BNPL: due date is borrow + 60 days', jbnDue.due_date === D(60), jbnDue.due_date);
+  // Instalment plans: repaying everything on the final day already counts
+  // earlier instalments as overdue — the result must say what on-time costs.
+  check('Daraz day 90: note gives the on-time total Rs 26,000', dz90.notes.some((n) => n.includes('26,000') && n.includes('on time')), dz90.notes);
+  check('Daraz day 30: no on-time note needed (no late fee)', !dz3.notes.some((n) => n.includes('Pay each instalment')), dz3.notes);
+  const jbn90 = M.compute(byId['jazzcash-bnpl'], { principal: 10000, cycles: 1, borrow_date: B, repay_date: D(90) });
+  check('JazzCash BNPL day 90: note gives the on-time total Rs 11,500', jbn90.notes.some((n) => n.includes('11,500') && n.includes('on time')), jbn90.notes);
+  // Negative user-typed numbers are clamped, never a loan that pays you.
+  const cuNeg = M.compute(byId.custom, {
+    principal: 10000, cycles: 1, borrow_date: B, repay_date: D(14),
+    custom: { fee_kind: 'weekly-simple', rate_pct: -5, term_days: 14, late_kind: 'none', grace_days: 0, cap_kind: 'none' },
+  });
+  check('Custom negative rate: clamped to 0, total = loan', cuNeg.total === 10000 && cuNeg.markup === 0, cuNeg);
+  const cuNegLate = M.compute(byId.custom, {
+    principal: 10000, cycles: 1, borrow_date: B, repay_date: D(33),
+    custom: { fee_kind: 'flat-term', rate_pct: 0, term_days: 30, late_kind: 'one-off-pct', late_pct: -5, grace_days: 0, cap_kind: 'none' },
+  });
+  check('Custom negative late fee: clamped to 0, total = loan', cuNegLate.total === 10000 && cuNegLate.late_fee === 0, cuNegLate);
+  // KFS per-instalment late fee now counts the instalments the user enters
+  // (before, it always counted 1 — the KFS form had no instalments field).
+  const kfsInst = M.compute(byId['ubl-cashplus'], { principal: 20000, cycles: 1, borrow_date: B, repay_date: D(90), kfs: { fee_kind: 'flat-term', rate_pct: 30, term_days: 90, instalments: 3, late_kind: 'per-instalment-pct', late_pct: 5, grace_days: 0, cap_kind: 'none' } });
+  check('KFS per-instalment late fee, 3 instalments at day 90 -> late 867', kfsInst.late_fee === 867 && kfsInst.total === 26867, kfsInst);
+  // Manual page escapes the user-typed early-repayment note (no raw HTML).
+  const manualJs = fs.readFileSync(path.join(__dirname, 'public', 'manual.js'), 'utf8');
+  check('Manual: early note is escaped before rendering', /function esc\(/.test(manualJs) && /esc\(n\)/.test(manualJs), null);
+  // Weekly-simple policy text uses the preset's own rate, not a hard-coded 5%.
+  check('Calcpage: weekly-simple text uses preset rate', /weekly_rate_pct/.test(fs.readFileSync(path.join(__dirname, 'public', 'calcpage.js'), 'utf8')), null);
+
+  // ---- 21. Server smoke (fresh DB) ----
   try { fs.unlinkSync(DB); } catch {}
   try { fs.unlinkSync(DB + '-wal'); } catch {}
   try { fs.unlinkSync(DB + '-shm'); } catch {}

@@ -49,7 +49,7 @@
       var r = parts.join(', ');
       return r ? (r + ' a week on the outstanding loan, compounded every 7 days.') : 'A % a week on the outstanding loan, compounded every 7 days.';
     }
-    if (p.model === 'weekly-simple') return '5% a week on the loan, simple (not compounded).';
+    if (p.model === 'weekly-simple') return (p.weekly_rate_pct != null ? p.weekly_rate_pct : 5) + '% a week on the loan, simple (not compounded).';
     if (p.model === 'flat-term') {
       var due = LoanCalc.dueInfo(p, { principal: 0, term_option: 0 });
       return 'Flat ' + (due.fee_pct != null ? due.fee_pct : '—') + '% of the loan for the whole term.';
@@ -128,9 +128,12 @@
         r.markup.toLocaleString('en-PK') + '.';
     }
     if (p.id === 'jazzcash-readycash' || p.id === 'jazzcash-readyload') {
-      return 'Fee = loan × 5% × weeks (simple, not compounded). Rs ' +
-        input.principal.toLocaleString('en-PK') + ' × 5% × ' + (r.days / 7).toFixed(1) +
-        ' weeks = Rs ' + r.markup.toLocaleString('en-PK') + '. Cap 40% (8 weeks).';
+      var wkRate = p.weekly_rate_pct != null ? p.weekly_rate_pct : 5;
+      var capPct = p.cap_pct != null ? p.cap_pct : 40;
+      var maxWk = p.max_weeks != null ? p.max_weeks : 8;
+      return 'Fee = loan × ' + wkRate + '% × weeks (simple, not compounded). Rs ' +
+        input.principal.toLocaleString('en-PK') + ' × ' + wkRate + '% × ' + (r.days / 7).toFixed(1) +
+        ' weeks = Rs ' + r.markup.toLocaleString('en-PK') + '. Cap ' + capPct + '% (' + maxWk + ' weeks).';
     }
     if (p.model === 'flat-term') {
       var due = LoanCalc.dueInfo(p, input);
@@ -228,6 +231,7 @@
         rate_pct: Number($('kfsRate').value) || 0,
         term_days: Number($('kfsTermDays').value) || 365,
         term_months: Math.max(1, Math.round((Number($('kfsTermDays').value) || 365) / 30)),
+        instalments: Number($('kfsInstalments').value) || 1,
         late_kind: $('kfsLateKind').value,
         late_pct: Number($('kfsLateValue').value) || 0,
         late_flat_rs: $('kfsLateKind').value === 'flat-rs' ? (Number($('kfsLateValue').value) || 0) : 0,
@@ -454,6 +458,9 @@
   function refreshKfsVisibility() {
     var lk = $('kfsLateKind').value;
     $('kfsLateWrap').hidden = lk === 'none';
+    // Instalments count only matters for a per-instalment late fee on a
+    // non-EMI loan — for EMI the instalments are the term in months.
+    $('kfsInstWrap').hidden = lk !== 'per-instalment-pct' || $('kfsFeeKind').value === 'annual-emi';
     $('kfsLateValueLabel').textContent = lk === 'flat-rs' ? 'Late fee (Rs)' : 'Late fee (%)';
     $('kfsCapValWrap').hidden = $('kfsCapKind').value === 'none';
   }

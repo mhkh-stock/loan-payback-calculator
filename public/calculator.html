@@ -211,6 +211,13 @@
             <input id="kfsGraceDays" type="number" min="0" step="1" value="0" inputmode="numeric">
           </div>
         </div>
+        <div class="row2" id="kfsInstWrap" hidden>
+          <div>
+            <label for="kfsInstalments">Instalments</label>
+            <input id="kfsInstalments" type="number" min="1" step="1" value="3" inputmode="numeric">
+            <p class="field-hint">How many equal instalments is the loan paid in? The late fee counts per overdue instalment.</p>
+          </div>
+        </div>
         <label for="kfsCapKind">Fee cap (optional)</label>
         <select id="kfsCapKind">
           <option value="none" selected>No cap</option>
