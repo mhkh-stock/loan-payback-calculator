@@ -190,8 +190,9 @@ legend { font-weight: 700; padding: 0 0.4rem; }
 .big-label { font-size: 0.95rem; color: var(--muted); }
 .kv { display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 1rem; padding: 0.35rem 0; border-bottom: 1px dashed rgba(148, 163, 184, 0.25); }
 .kv:last-child { border-bottom: none; }
-.kv .k { color: var(--muted); }
-.kv .v { font-weight: 700; text-align: right; }
+.kv .k { color: var(--muted); min-width: 0; overflow-wrap: anywhere; }
+.kv .v { font-weight: 700; text-align: right; min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 520px) { .kv { grid-template-columns: 1fr; gap: 0.1rem; } .kv .v { text-align: left; } }
 .late-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin: 0.8rem 0; }
 @media (max-width: 520px) { .late-cards { grid-template-columns: 1fr; } }
 .late-card {

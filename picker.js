@@ -39,7 +39,7 @@
     return '';
   }
   function cardHtml(p) {
-    var href = '/calculator.html?preset=' + encodeURIComponent(p.id);
+    var href = 'calculator.html?preset=' + encodeURIComponent(p.id);
     return '<a class="loan-card" href="' + href + '">' +
       '<div class="lc-name">' + esc(p.name) + ' ' + badge(p) + '<br><span class="ur">' + esc(p.name_ur || '') + '</span></div>' +
       '<div class="lc-lender">' + esc(p.lender) + '</div>' +
